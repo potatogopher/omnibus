@@ -1,0 +1,210 @@
+basePath: /
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  AtlasUser:
+    description: A user account
+    example:
+      disabled: true
+      email: Recusandae eum.
+      given_name: Rerum sit voluptatem.
+      href: A eaque voluptatem quasi et facilis et.
+      id: 8.499419e+18
+      password_hash: Omnis ut.
+      password_salt: Aspernatur debitis qui voluptates.
+      surname: Laborum ex fuga rem.
+    properties:
+      disabled:
+        description: Flag for if the user is disabled or not
+        example: false
+        type: boolean
+      email:
+        description: Email of user
+        example: romaine@gislason.com
+        format: email
+        type: string
+      given_name:
+        description: Given name of user
+        example: Error aut quia.
+        type: string
+      href:
+        description: API href of the user
+        example: Possimus et quisquam voluptatem eum.
+        type: string
+      id:
+        description: ID of user
+        example: 8.8469735e+18
+        format: int64
+        type: integer
+      password_hash:
+        description: Hashed password of user
+        example: Soluta optio quaerat ex repellat voluptas.
+        type: string
+      password_salt:
+        description: Salted password of user
+        example: Numquam voluptatem aut.
+        type: string
+      surname:
+        description: Surname of user
+        example: Et repudiandae aliquam omnis unde aut.
+        type: string
+    required:
+    - id
+    - href
+    - email
+    - password_salt
+    - password_hash
+    - disabled
+    title: 'Mediatype identifier: application/atlas.user+json'
+    type: object
+  CreateUserPayload:
+    properties:
+      disabled:
+        description: Flag for if the user is disabled or not
+        type: boolean
+      email:
+        description: Email of user
+        format: email
+        type: string
+      given_name:
+        description: Given name of user
+        type: string
+      password:
+        type: string
+      surname:
+        description: Surname of user
+        type: string
+    required:
+    - email
+    - password
+    title: CreateUserPayload
+    type: object
+  UpdateUserPayload:
+    properties:
+      disabled:
+        description: Flag for if the user is disabled or not
+        type: boolean
+      email:
+        description: Email of user
+        format: email
+        type: string
+      given_name:
+        description: Given name of user
+        type: string
+      new_password:
+        type: string
+      old_password:
+        type: string
+      surname:
+        description: Surname of user
+        type: string
+    title: UpdateUserPayload
+    type: object
+host: localhost
+info:
+  contact:
+    email: nick@rocketmade.com
+    name: Nick Rucci
+    url: http://rucci.io
+  description: Project Management Application
+  license:
+    name: MIT
+    url: https://github.com/nicholasrucci/goa-atlas/blob/master/LICENSE
+  title: Atlas
+  version: ""
+paths:
+  users:
+    post:
+      description: Create new user
+      operationId: user#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreateUserPayload'
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: /user/[0-9]+
+              type: string
+      schemes:
+      - http
+  users/{userID}:
+    delete:
+      operationId: user#delete
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      schemes:
+      - http
+    get:
+      description: Retrieve user with given id. IDs 1 and 2 pre-exist in the system.
+      operationId: user#show
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/AtlasUser'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+    put:
+      description: Change user attributes
+      operationId: user#update
+      parameters:
+      - description: User ID
+        in: path
+        name: userID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdateUserPayload'
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      schemes:
+      - http
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  NoContent:
+    description: No Content
+  NotFound:
+    description: Not Found
+  OK:
+    description: OK
+    schema:
+      $ref: '#/definitions/AtlasUser'
+schemes:
+- http
+swagger: "2.0"

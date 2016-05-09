@@ -50,6 +50,8 @@ func (c *UserController) Create(ctx *app.CreateUserContext) error {
 		return err
 	}
 
+	u.GivenName = *ctx.Payload.GivenName
+	u.Surname = *ctx.Payload.Surname
 	u.Email = ctx.Payload.Email
 	u.PasswordHash = hex.EncodeToString(hash)
 	u.PasswordSalt = hex.EncodeToString(salt)
@@ -103,6 +105,8 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 		return ErrDatabaseError(err)
 	}
 
+	user.GivenName = *ctx.Payload.GivenName
+	user.Surname = *ctx.Payload.Surname
 	user.Email = *ctx.Payload.Email
 
 	err = udb.Update(ctx, &user)

@@ -43,7 +43,7 @@ type createUserPayload struct {
 	// Email of user
 	Email *string `json:"email,omitempty" xml:"email,omitempty"`
 	// Given name of user
-	GivenName *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
+	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	Password  *string `json:"password,omitempty" xml:"password,omitempty"`
 	// Surname of user
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
@@ -94,7 +94,7 @@ type CreateUserPayload struct {
 	// Email of user
 	Email string `json:"email" xml:"email"`
 	// Given name of user
-	GivenName *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
+	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	Password  string  `json:"password" xml:"password"`
 	// Surname of user
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
@@ -240,9 +240,9 @@ type updateUserPayload struct {
 	// Email of user
 	Email *string `json:"email,omitempty" xml:"email,omitempty"`
 	// Given name of user
-	GivenName   *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
-	NewPassword *string `json:"new_password,omitempty" xml:"new_password,omitempty"`
-	OldPassword *string `json:"old_password,omitempty" xml:"old_password,omitempty"`
+	GivenName   *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
+	NewPassword *string `json:"newPassword,omitempty" xml:"newPassword,omitempty"`
+	OldPassword *string `json:"oldPassword,omitempty" xml:"oldPassword,omitempty"`
 	// Surname of user
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
 }
@@ -288,9 +288,9 @@ type UpdateUserPayload struct {
 	// Email of user
 	Email *string `json:"email,omitempty" xml:"email,omitempty"`
 	// Given name of user
-	GivenName   *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
-	NewPassword *string `json:"new_password,omitempty" xml:"new_password,omitempty"`
-	OldPassword *string `json:"old_password,omitempty" xml:"old_password,omitempty"`
+	GivenName   *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
+	NewPassword *string `json:"newPassword,omitempty" xml:"newPassword,omitempty"`
+	OldPassword *string `json:"oldPassword,omitempty" xml:"oldPassword,omitempty"`
 	// Surname of user
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
 }

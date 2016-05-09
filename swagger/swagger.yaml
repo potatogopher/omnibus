@@ -10,11 +10,11 @@ definitions:
     example:
       disabled: true
       email: Recusandae eum.
-      given_name: Rerum sit voluptatem.
+      givenName: Rerum sit voluptatem.
       href: A eaque voluptatem quasi et facilis et.
       id: 8.499419e+18
-      password_hash: Omnis ut.
-      password_salt: Aspernatur debitis qui voluptates.
+      passwordHash: Omnis ut.
+      passwordSalt: Aspernatur debitis qui voluptates.
       surname: Laborum ex fuga rem.
     properties:
       disabled:
@@ -26,7 +26,7 @@ definitions:
         example: romaine@gislason.com
         format: email
         type: string
-      given_name:
+      givenName:
         description: Given name of user
         example: Error aut quia.
         type: string
@@ -39,11 +39,11 @@ definitions:
         example: 8.8469735e+18
         format: int64
         type: integer
-      password_hash:
+      passwordHash:
         description: Hashed password of user
         example: Soluta optio quaerat ex repellat voluptas.
         type: string
-      password_salt:
+      passwordSalt:
         description: Salted password of user
         example: Numquam voluptatem aut.
         type: string
@@ -55,8 +55,8 @@ definitions:
     - id
     - href
     - email
-    - password_salt
-    - password_hash
+    - passwordSalt
+    - passwordHash
     - disabled
     title: 'Mediatype identifier: application/atlas.user+json'
     type: object
@@ -69,7 +69,7 @@ definitions:
         description: Email of user
         format: email
         type: string
-      given_name:
+      givenName:
         description: Given name of user
         type: string
       password:
@@ -91,12 +91,12 @@ definitions:
         description: Email of user
         format: email
         type: string
-      given_name:
+      givenName:
         description: Given name of user
         type: string
-      new_password:
+      newPassword:
         type: string
-      old_password:
+      oldPassword:
         type: string
       surname:
         description: Surname of user

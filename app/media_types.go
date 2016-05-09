@@ -23,7 +23,7 @@ type AtlasUser struct {
 	// Email of user
 	Email string `json:"email" xml:"email"`
 	// Given name of user
-	GivenName *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
+	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	// API href of the user
 	Href string `json:"href" xml:"href"`
 	// ID of user

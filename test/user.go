@@ -12,82 +12,6 @@ import (
 	"testing"
 )
 
-// UpdateUserNoContent test setup
-func UpdateUserNoContent(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	UpdateUserNoContentCtx(t, context.Background(), ctrl, userID, payload)
-}
-
-// UpdateUserNoContentCtx test setup
-func UpdateUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	err := payload.Validate()
-	if err != nil {
-		panic(err)
-	}
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
-	updateCtx.Payload = payload
-
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Update(updateCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
-	}
-
-}
-
-// UpdateUserNotFound test setup
-func UpdateUserNotFound(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	UpdateUserNotFoundCtx(t, context.Background(), ctrl, userID, payload)
-}
-
-// UpdateUserNotFoundCtx test setup
-func UpdateUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	err := payload.Validate()
-	if err != nil {
-		panic(err)
-	}
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
-	updateCtx.Payload = payload
-
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Update(updateCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 404 {
-		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
-	}
-
-}
-
 // DeleteUserNoContent test setup
 func DeleteUserNoContent(t *testing.T, ctrl app.UserController, userID int) {
 	DeleteUserNoContentCtx(t, context.Background(), ctrl, userID)
@@ -149,49 +73,6 @@ func DeleteUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserContr
 	if rw.Code != 404 {
 		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
 	}
-
-}
-
-// ShowUserOK test setup
-func ShowUserOK(t *testing.T, ctrl app.UserController, userID int) *app.AtlasUser {
-	return ShowUserOKCtx(t, context.Background(), ctrl, userID)
-}
-
-// ShowUserOKCtx test setup
-func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) *app.AtlasUser {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Show(showCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	a, ok := resp.(*app.AtlasUser)
-	if !ok {
-		t.Errorf("invalid response media: got %+v, expected instance of app.AtlasUser", resp)
-	}
-
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-
-	err = a.Validate()
-	if err != nil {
-		t.Errorf("invalid response payload: got %v", err)
-	}
-	return a
 
 }
 
@@ -281,6 +162,49 @@ func ShowUserOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.UserControlle
 
 }
 
+// ShowUserOK test setup
+func ShowUserOK(t *testing.T, ctrl app.UserController, userID int) *app.AtlasUser {
+	return ShowUserOKCtx(t, context.Background(), ctrl, userID)
+}
+
+// ShowUserOKCtx test setup
+func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) *app.AtlasUser {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
+	showCtx, err := app.NewShowUserContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Show(showCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	a, ok := resp.(*app.AtlasUser)
+	if !ok {
+		t.Errorf("invalid response media: got %+v, expected instance of app.AtlasUser", resp)
+	}
+
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+
+	err = a.Validate()
+	if err != nil {
+		t.Errorf("invalid response payload: got %v", err)
+	}
+	return a
+
+}
+
 // ShowUserNotFound test setup
 func ShowUserNotFound(t *testing.T, ctrl app.UserController, userID int) {
 	ShowUserNotFoundCtx(t, context.Background(), ctrl, userID)
@@ -347,6 +271,82 @@ func CreateUserCreatedCtx(t *testing.T, ctx context.Context, ctrl app.UserContro
 
 	if rw.Code != 201 {
 		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
+	}
+
+}
+
+// UpdateUserNoContent test setup
+func UpdateUserNoContent(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
+	UpdateUserNoContentCtx(t, context.Background(), ctrl, userID, payload)
+}
+
+// UpdateUserNoContentCtx test setup
+func UpdateUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
+	err := payload.Validate()
+	if err != nil {
+		panic(err)
+	}
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
+	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
+	updateCtx.Payload = payload
+
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Update(updateCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	}
+
+}
+
+// UpdateUserNotFound test setup
+func UpdateUserNotFound(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
+	UpdateUserNotFoundCtx(t, context.Background(), ctrl, userID, payload)
+}
+
+// UpdateUserNotFoundCtx test setup
+func UpdateUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
+	err := payload.Validate()
+	if err != nil {
+		panic(err)
+	}
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
+	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
+	updateCtx.Payload = payload
+
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Update(updateCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
 	}
 
 }

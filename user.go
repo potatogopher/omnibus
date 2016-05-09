@@ -1,10 +1,24 @@
 package main
 
 import (
+	"crypto/rand"
+	"encoding/hex"
+	"io"
+
 	"github.com/goadesign/goa"
+
+	"golang.org/x/crypto/scrypt"
 
 	"goa-atlas/app"
 	"goa-atlas/models"
+)
+
+var (
+	// PasswordSaltBytes is the number of bytes a salt will be
+	PasswordSaltBytes = 32
+
+	// PasswordHashBytes is the number of bytes a hash will be
+	PasswordHashBytes = 64
 )
 
 // UserController implements the user resource.
@@ -19,7 +33,24 @@ func NewUserController(service *goa.Service) *UserController {
 
 // Create runs the create action.
 func (c *UserController) Create(ctx *app.CreateUserContext) error {
-	user, err := udb.Add(ctx, &models.User{})
+	u := models.User{}
+
+	salt := make([]byte, PasswordSaltBytes)
+	_, err := io.ReadFull(rand.Reader, salt)
+	if err != nil {
+		return err
+	}
+
+	hash, err := scrypt.Key([]byte(ctx.Payload.Password), salt, 1<<14, 8, 1, PasswordHashBytes)
+	if err != nil {
+		return err
+	}
+
+	u.Email = ctx.Payload.Email
+	u.PasswordHash = hex.EncodeToString(hash)
+	u.PasswordSalt = hex.EncodeToString(salt)
+
+	user, err := udb.Add(ctx, &u)
 	if err != nil {
 		return err
 	}

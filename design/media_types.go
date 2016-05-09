@@ -10,23 +10,23 @@ var User = MediaType("application/atlas.user+json", func() {
 	Attributes(func() {
 		Attribute("id", Integer, "ID of user")
 		Attribute("href", String, "API href of the user")
-		Attribute("given_name", String, "Given name of user")
+		Attribute("givenName", String, "Given name of user")
 		Attribute("surname", String, "Surname of user")
 		Attribute("email", String, "Email of user", func() {
 			Format("email")
 		})
-		Attribute("password_hash", String, "Hashed password of user")
-		Attribute("password_salt", String, "Salted password of user")
+		Attribute("passwordHash", String, "Hashed password of user")
+		Attribute("passwordSalt", String, "Salted password of user")
 		Attribute("disabled", Boolean, "Flag for if the user is disabled or not")
 
-		Required("id", "href", "email", "password_salt", "password_hash", "disabled")
+		Required("id", "href", "email", "passwordSalt", "passwordHash", "disabled")
 	})
 
 	View("default", func() {
 		Attribute("id")
 		Attribute("href")
 		Attribute("email")
-		Attribute("given_name")
+		Attribute("givenName")
 		Attribute("surname")
 		Attribute("disabled")
 	})

@@ -28,7 +28,7 @@ var _ = Resource("user", func() {
 		)
 		Description("Create new user")
 		Payload(func() {
-			Member("given_name")
+			Member("givenName")
 			Member("surname")
 			Member("email")
 			Member("password")
@@ -48,11 +48,11 @@ var _ = Resource("user", func() {
 			Param("userID", Integer, "User ID")
 		})
 		Payload(func() {
-			Member("given_name")
+			Member("givenName")
 			Member("surname")
 			Member("email")
-			Member("old_password")
-			Member("new_password")
+			Member("oldPassword")
+			Member("newPassword")
 			Member("disabled")
 		})
 		Response(NoContent)

@@ -6,6 +6,7 @@ import (
 	"io"
 
 	"github.com/goadesign/goa"
+	"github.com/jinzhu/gorm"
 
 	"golang.org/x/crypto/scrypt"
 
@@ -19,6 +20,9 @@ var (
 
 	// PasswordHashBytes is the number of bytes a hash will be
 	PasswordHashBytes = 64
+
+	// ErrDatabaseError is the error returned when a db query fails.
+	ErrDatabaseError = goa.NewErrorClass("db_error", 500)
 )
 
 // UserController implements the user resource.
@@ -61,7 +65,20 @@ func (c *UserController) Create(ctx *app.CreateUserContext) error {
 
 // Delete runs the delete action.
 func (c *UserController) Delete(ctx *app.DeleteUserContext) error {
-	// TBD: implement
+	user, err := udb.Get(ctx.Context, ctx.UserID)
+	if err == gorm.ErrRecordNotFound {
+		return ctx.NotFound()
+	} else if err != nil {
+		return ErrDatabaseError(err)
+	}
+
+	user.Disabled = true
+
+	err = udb.Update(ctx, &user)
+	if err != nil {
+		return ErrDatabaseError(err)
+	}
+
 	return nil
 }
 

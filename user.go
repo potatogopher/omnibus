@@ -84,13 +84,31 @@ func (c *UserController) Delete(ctx *app.DeleteUserContext) error {
 
 // Show runs the show action.
 func (c *UserController) Show(ctx *app.ShowUserContext) error {
-	// TBD: implement
-	res := &app.AtlasUser{}
-	return ctx.OK(res)
+	user, err := udb.OneAtlasUser(ctx.Context, ctx.UserID)
+	if err == gorm.ErrRecordNotFound {
+		return ctx.NotFound()
+	} else if err != nil {
+		return ErrDatabaseError(err)
+	}
+	user.Href = app.UserHref(user.ID)
+	return ctx.OK(user)
 }
 
 // Update runs the update action.
 func (c *UserController) Update(ctx *app.UpdateUserContext) error {
-	// TBD: implement
+	user, err := udb.Get(ctx.Context, ctx.UserID)
+	if err == gorm.ErrRecordNotFound {
+		return ctx.NotFound()
+	} else if err != nil {
+		return ErrDatabaseError(err)
+	}
+
+	user.Email = *ctx.Payload.Email
+
+	err = udb.Update(ctx, &user)
+	if err != nil {
+		return ErrDatabaseError(err)
+	}
+
 	return nil
 }

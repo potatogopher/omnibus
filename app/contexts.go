@@ -18,6 +18,78 @@ import (
 	"strconv"
 )
 
+// TokenAuthContext provides the auth token action context.
+type TokenAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	Payload *TokenAuthPayload
+}
+
+// NewTokenAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller token action.
+func NewTokenAuthContext(ctx context.Context, service *goa.Service) (*TokenAuthContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := TokenAuthContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	return &rctx, err
+}
+
+// tokenAuthPayload is the auth token action payload.
+type tokenAuthPayload struct {
+	Email    *string `json:"email,omitempty" xml:"email,omitempty"`
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *tokenAuthPayload) Validate() (err error) {
+	if payload.Email == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
+	}
+	if payload.Password == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+
+	return err
+}
+
+// Publicize creates TokenAuthPayload from tokenAuthPayload
+func (payload *tokenAuthPayload) Publicize() *TokenAuthPayload {
+	var pub TokenAuthPayload
+	if payload.Email != nil {
+		pub.Email = *payload.Email
+	}
+	if payload.Password != nil {
+		pub.Password = *payload.Password
+	}
+	return &pub
+}
+
+// TokenAuthPayload is the auth token action payload.
+type TokenAuthPayload struct {
+	Email    string `json:"email" xml:"email"`
+	Password string `json:"password" xml:"password"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *TokenAuthPayload) Validate() (err error) {
+	if payload.Email == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "email"))
+	}
+	if payload.Password == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "password"))
+	}
+
+	return err
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *TokenAuthContext) Created(r *Authorize) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize+json")
+	return ctx.Service.Send(ctx.Context, 201, r)
+}
+
 // CreatePostContext provides the post create action context.
 type CreatePostContext struct {
 	context.Context

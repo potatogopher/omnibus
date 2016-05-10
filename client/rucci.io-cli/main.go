@@ -98,24 +98,37 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "update",
-		Short: `update action`,
+		Use:   "token",
+		Short: `Obtain an access token`,
 	}
-	tmp7 := new(UpdatePostCommand)
+	tmp7 := new(TokenAuthCommand)
 	sub = &cobra.Command{
-		Use:   `post ["/posts/:postID"]`,
+		Use:   `auth ["/auth/token"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
 	}
 	tmp7.RegisterFlags(sub, c)
 	command.AddCommand(sub)
-	tmp8 := new(UpdateUserCommand)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "update",
+		Short: `update action`,
+	}
+	tmp8 := new(UpdatePostCommand)
 	sub = &cobra.Command{
-		Use:   `user ["/users/:userID"]`,
+		Use:   `post ["/posts/:postID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp8.Run(c, args) },
 	}
 	tmp8.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	tmp9 := new(UpdateUserCommand)
+	sub = &cobra.Command{
+		Use:   `user ["/users/:userID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
+	}
+	tmp9.RegisterFlags(sub, c)
 	command.AddCommand(sub)
 	app.AddCommand(command)
 

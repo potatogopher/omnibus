@@ -5,6 +5,27 @@ consumes:
 - application/gob
 - application/x-gob
 definitions:
+  Authorize:
+    description: Token authorization response
+    example:
+      access_token: Voluptatem nam dolorem quam consequatur.
+      expires_in: Ut magnam velit quis libero ea quia.
+      token_type: Quam quo aut qui.
+    properties:
+      access_token:
+        description: access token
+        example: Et quis.
+        type: string
+      expires_in:
+        description: Time to expiration in seconds
+        example: Non et magnam blanditiis repellat quia quo.
+        type: string
+      token_type:
+        description: type of token
+        example: Recusandae et consectetur non qui.
+        type: string
+    title: 'Mediatype identifier: application/vnd.authorize+json'
+    type: object
   CreatePostPayload:
     properties:
       content:
@@ -42,27 +63,27 @@ definitions:
   Post:
     description: A blog post
     example:
-      content: Dolorem quam consequatur et ut.
-      href: Velit quis libero ea quia repellat quam.
-      id: 6.2523646e+18
-      title: Qui dolor.
+      content: Tempore voluptatem incidunt.
+      href: Sit libero.
+      id: 2.1024433e+18
+      title: Et voluptatem corporis error modi porro.
     properties:
       content:
         description: Content of the blog post
-        example: Et quis.
+        example: Molestiae beatae alias repudiandae non quo sint.
         type: string
       href:
         description: API href of the post
-        example: Non et magnam blanditiis repellat quia quo.
+        example: Cumque consequatur ut vitae beatae et.
         type: string
       id:
         description: ID of post
-        example: 4.1688338e+18
+        example: 3.885456e+17
         format: int64
         type: integer
       title:
         description: Title of the blog post
-        example: Et consectetur non qui reiciendis voluptatem.
+        example: Sit aliquam nulla.
         type: string
     required:
     - id
@@ -70,6 +91,17 @@ definitions:
     - title
     - content
     title: 'Mediatype identifier: application/vnd.post+json'
+    type: object
+  TokenAuthPayload:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    title: TokenAuthPayload
     type: object
   UpdatePostPayload:
     properties:
@@ -105,13 +137,13 @@ definitions:
     description: A user account
     example:
       disabled: true
-      email: Odit optio hic.
-      given_name: Quos harum dolores eos nobis fugit.
-      href: Necessitatibus veritatis.
-      id: 8.6423983e+18
-      passwordHash: Et harum.
-      passwordSalt: Magnam illum exercitationem sed doloremque sint ipsam.
-      surname: Rerum voluptas.
+      email: Amet occaecati.
+      given_name: Voluptates quisquam facilis optio.
+      href: Qui mollitia.
+      id: 6.067729e+18
+      passwordHash: Nemo commodi asperiores non aperiam repellendus rem.
+      passwordSalt: Soluta voluptatem odit sint voluptas cum voluptates.
+      surname: Enim tempora quis ducimus consequatur.
     properties:
       disabled:
         description: Flag for if the user is disabled or not
@@ -119,33 +151,33 @@ definitions:
         type: boolean
       email:
         description: Email of user
-        example: zola@morissette.biz
+        example: brandt@parker.name
         format: email
         type: string
       given_name:
         description: Given name of user
-        example: Nobis ut fuga nihil consectetur corporis.
+        example: Eos nobis.
         type: string
       href:
         description: API href of the user
-        example: Placeat reiciendis sed.
+        example: Ut necessitatibus veritatis.
         type: string
       id:
         description: ID of user
-        example: 1.0114296e+17
+        example: 8.6423983e+18
         format: int64
         type: integer
       passwordHash:
         description: Hashed password of user
-        example: Cumque molestiae nulla fuga.
+        example: Et harum.
         type: string
       passwordSalt:
         description: Salted password of user
-        example: Nulla porro et.
+        example: Magnam illum exercitationem sed doloremque sint ipsam.
         type: string
       surname:
         description: Surname of user
-        example: Dolor fugiat impedit nesciunt occaecati.
+        example: Rerum voluptas.
         type: string
     required:
     - id
@@ -169,6 +201,23 @@ info:
   title: rucci.io
   version: ""
 paths:
+  auth/token:
+    post:
+      description: Obtain an access token
+      operationId: auth#token
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/TokenAuthPayload'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Authorize'
+      schemes:
+      - http
   posts:
     post:
       description: |

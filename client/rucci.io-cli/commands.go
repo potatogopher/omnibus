@@ -85,6 +85,7 @@ func (cmd *CreatePostCommand) Run(c *client.Client, args []string) error {
 // RegisterFlags registers the command flags with the command line.
 func (cmd *CreatePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
+	c.SignerJWT.RegisterFlags(cc)
 }
 
 // Run makes the HTTP request corresponding to the DeletePostCommand command.
@@ -111,6 +112,7 @@ func (cmd *DeletePostCommand) Run(c *client.Client, args []string) error {
 func (cmd *DeletePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var postID int
 	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+	c.SignerJWT.RegisterFlags(cc)
 }
 
 // Run makes the HTTP request corresponding to the ShowPostCommand command.
@@ -137,6 +139,7 @@ func (cmd *ShowPostCommand) Run(c *client.Client, args []string) error {
 func (cmd *ShowPostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
 	var postID int
 	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+	c.SignerJWT.RegisterFlags(cc)
 }
 
 // Run makes the HTTP request corresponding to the UpdatePostCommand command.
@@ -171,6 +174,7 @@ func (cmd *UpdatePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client)
 	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
 	var postID int
 	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+	c.SignerJWT.RegisterFlags(cc)
 }
 
 // Run makes the HTTP request corresponding to the CreateUserCommand command.

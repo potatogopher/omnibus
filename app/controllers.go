@@ -61,8 +61,9 @@ func MountPostController(service *goa.Service, ctrl PostController) {
 		return ctrl.Create(rctx)
 	}
 	h = handlePostOrigin(h)
+	h = handleSecurity("jwt", h)
 	service.Mux.Handle("POST", "/posts", ctrl.MuxHandler("Create", h, unmarshalCreatePostPayload))
-	service.LogInfo("mount", "ctrl", "Post", "action", "Create", "route", "POST /posts")
+	service.LogInfo("mount", "ctrl", "Post", "action", "Create", "route", "POST /posts", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		rctx, err := NewDeletePostContext(ctx, service)
@@ -72,8 +73,9 @@ func MountPostController(service *goa.Service, ctrl PostController) {
 		return ctrl.Delete(rctx)
 	}
 	h = handlePostOrigin(h)
+	h = handleSecurity("jwt", h)
 	service.Mux.Handle("DELETE", "/posts/:postID", ctrl.MuxHandler("Delete", h, nil))
-	service.LogInfo("mount", "ctrl", "Post", "action", "Delete", "route", "DELETE /posts/:postID")
+	service.LogInfo("mount", "ctrl", "Post", "action", "Delete", "route", "DELETE /posts/:postID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		rctx, err := NewShowPostContext(ctx, service)
@@ -83,8 +85,9 @@ func MountPostController(service *goa.Service, ctrl PostController) {
 		return ctrl.Show(rctx)
 	}
 	h = handlePostOrigin(h)
+	h = handleSecurity("jwt", h)
 	service.Mux.Handle("GET", "/posts/:postID", ctrl.MuxHandler("Show", h, nil))
-	service.LogInfo("mount", "ctrl", "Post", "action", "Show", "route", "GET /posts/:postID")
+	service.LogInfo("mount", "ctrl", "Post", "action", "Show", "route", "GET /posts/:postID", "security", "jwt")
 
 	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
 		rctx, err := NewUpdatePostContext(ctx, service)
@@ -97,8 +100,9 @@ func MountPostController(service *goa.Service, ctrl PostController) {
 		return ctrl.Update(rctx)
 	}
 	h = handlePostOrigin(h)
+	h = handleSecurity("jwt", h)
 	service.Mux.Handle("PUT", "/posts/:postID", ctrl.MuxHandler("Update", h, unmarshalUpdatePostPayload))
-	service.LogInfo("mount", "ctrl", "Post", "action", "Update", "route", "PUT /posts/:postID")
+	service.LogInfo("mount", "ctrl", "Post", "action", "Update", "route", "PUT /posts/:postID", "security", "jwt")
 }
 
 // handlePostOrigin applies the CORS response headers corresponding to the origin.

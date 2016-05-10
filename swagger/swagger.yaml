@@ -171,7 +171,10 @@ info:
 paths:
   posts:
     post:
-      description: Create new post
+      description: |
+        Create new post
+
+        ** Required security scopes**:
       operationId: post#create
       parameters:
       - in: body
@@ -191,6 +194,10 @@ paths:
       - http
   posts/{postID}:
     delete:
+      description: |2
+
+
+        ** Required security scopes**:
       operationId: post#delete
       parameters:
       - description: Post ID
@@ -206,7 +213,10 @@ paths:
       schemes:
       - http
     get:
-      description: Retrieve post with given id.
+      description: |
+        Retrieve post with given id.
+
+        ** Required security scopes**:
       operationId: post#show
       parameters:
       - description: Post ID
@@ -224,7 +234,10 @@ paths:
       schemes:
       - http
     put:
-      description: Change post attributes
+      description: |
+        Change post attributes
+
+        ** Required security scopes**:
       operationId: post#update
       parameters:
       - description: Post ID
@@ -335,4 +348,17 @@ responses:
       $ref: '#/definitions/Post'
 schemes:
 - http
+securityDefinitions:
+  jwt:
+    description: |2-
+
+
+      **Token URL**: <a href='http://example.com/token'>http://example.com/token</a>
+
+      **Security Scopes**:
+        * `post:read`: Read anything in there
+        * `post:write`: Write to the system
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

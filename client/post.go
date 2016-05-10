@@ -42,6 +42,7 @@ func (c *Client) CreatePost(ctx context.Context, path string, payload *CreatePos
 	}
 	header := req.Header
 	header.Set("Content-Type", "application/json")
+	c.SignerJWT.Sign(ctx, req)
 	return c.Client.Do(ctx, req)
 }
 
@@ -64,6 +65,7 @@ func (c *Client) DeletePost(ctx context.Context, path string) (*http.Response, e
 	}
 	header := req.Header
 	header.Set("Content-Type", "application/json")
+	c.SignerJWT.Sign(ctx, req)
 	return c.Client.Do(ctx, req)
 }
 
@@ -86,6 +88,7 @@ func (c *Client) ShowPost(ctx context.Context, path string) (*http.Response, err
 	}
 	header := req.Header
 	header.Set("Content-Type", "application/json")
+	c.SignerJWT.Sign(ctx, req)
 	return c.Client.Do(ctx, req)
 }
 
@@ -121,5 +124,6 @@ func (c *Client) UpdatePost(ctx context.Context, path string, payload *UpdatePos
 	}
 	header := req.Header
 	header.Set("Content-Type", "application/json")
+	c.SignerJWT.Sign(ctx, req)
 	return c.Client.Do(ctx, req)
 }

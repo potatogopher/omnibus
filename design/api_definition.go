@@ -7,12 +7,12 @@ import (
 
 // This is the cellar application API design used by goa to generate
 // the application code, client, tests, documentation etc.
-var _ = API("Atlas", func() {
-	Title("Atlas")
-	Description("Project Management Application")
+var _ = API("rucci.io", func() {
+	Title("rucci.io")
+	Description("Blog for Nick Rucci")
 	Contact(func() {
 		Name("Nick Rucci")
-		Email("nick@rocketmade.com")
+		Email("nick@rucci.io")
 		URL("http://rucci.io")
 	})
 	License(func() {

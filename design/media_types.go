@@ -5,7 +5,7 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-var User = MediaType("application/rucci.user+json", func() {
+var User = MediaType("application/vnd.user+json", func() {
 	Description("A user account")
 	Attributes(func() {
 		Attribute("id", Integer, "ID of user")
@@ -43,7 +43,7 @@ var User = MediaType("application/rucci.user+json", func() {
 	})
 })
 
-var Post = MediaType("application/rucci.post+json", func() {
+var Post = MediaType("application/vnd.post+json", func() {
 	Description("A blog post")
 	Attributes(func() {
 		Attribute("id", Integer, "ID of post")

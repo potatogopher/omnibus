@@ -58,11 +58,11 @@ func (c *UserController) Create(ctx *app.CreateUserContext) error {
 
 	user, err := udb.Add(ctx, &u)
 	if err != nil {
-		return err
+		return ErrDatabaseError(err)
 	}
 
 	ctx.ResponseData.Header().Set("Location", app.UserHref(user.ID))
-	return nil
+	return ctx.Created()
 }
 
 // Delete runs the delete action.
@@ -81,7 +81,7 @@ func (c *UserController) Delete(ctx *app.DeleteUserContext) error {
 		return ErrDatabaseError(err)
 	}
 
-	return nil
+	return ctx.NoContent()
 }
 
 // Show runs the show action.
@@ -114,5 +114,5 @@ func (c *UserController) Update(ctx *app.UpdateUserContext) error {
 		return ErrDatabaseError(err)
 	}
 
-	return nil
+	return ctx.NoContent()
 }

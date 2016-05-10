@@ -2,14 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
 
+	token "github.com/dgrijalva/jwt-go"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/middleware"
+	"github.com/goadesign/goa/middleware/security/jwt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
+
 	"goa-blog/app"
 	"goa-blog/models"
 	"goa-blog/swagger"
+
 	"gopkg.in/inconshreveable/log15.v2"
 )
 
@@ -18,6 +23,7 @@ var logger log15.Logger
 var udb *models.UserDB
 var pdb *models.PostDB
 var ErrDatabaseError = goa.NewErrorClass("db_error", 500)
+var RSAPublicKey string
 
 func main() {
 	// Create service
@@ -45,6 +51,13 @@ func main() {
 	service.Use(middleware.LogRequest(true))
 	service.Use(middleware.ErrorHandler(service, true))
 	service.Use(middleware.Recover())
+
+	// Configure JWT Security
+	publicKey, err := token.ParseRSAPublicKeyFromPEM([]byte(RSAPublicKey))
+	if err != nil {
+		log.Fatal(err)
+	}
+	app.ConfigureJWTSecurity(service, jwt.New(publicKey, nil))
 
 	// Mount "user" controller
 	c := NewUserController(service)

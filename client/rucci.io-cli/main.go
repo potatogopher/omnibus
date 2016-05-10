@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"goa-atlas/client"
+	"goa-blog/client"
 	"os"
 	"time"
 )
@@ -35,62 +35,67 @@ func main() {
 func RegisterCommands(app *cobra.Command, c *client.Client) {
 	var command, sub *cobra.Command
 	command = &cobra.Command{
-		Use:   "create",
-		Short: `create action`,
+		Use:   "callback",
+		Short: `OAUTH2 callback endpoint`,
 	}
-	tmp1 := new(CreatePostCommand)
+	tmp1 := new(CallbackAuthCommand)
 	sub = &cobra.Command{
-		Use:   `post ["/posts"]`,
+		Use:   `auth ["/auth/:provider/callback"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp1.Run(c, args) },
 	}
 	tmp1.RegisterFlags(sub, c)
 	command.AddCommand(sub)
-	tmp2 := new(CreateUserCommand)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "create",
+		Short: `create action`,
+	}
+	tmp2 := new(CreatePostCommand)
 	sub = &cobra.Command{
-		Use:   `user ["/users"]`,
+		Use:   `post ["/posts"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp2.Run(c, args) },
 	}
 	tmp2.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	tmp3 := new(CreateUserCommand)
+	sub = &cobra.Command{
+		Use:   `user ["/users"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
+	}
+	tmp3.RegisterFlags(sub, c)
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
 		Use:   "delete",
 		Short: `delete action`,
 	}
-	tmp3 := new(DeletePostCommand)
+	tmp4 := new(DeletePostCommand)
 	sub = &cobra.Command{
 		Use:   `post ["/posts/:postID"]`,
-		Short: ``,
-		RunE:  func(cmd *cobra.Command, args []string) error { return tmp3.Run(c, args) },
-	}
-	tmp3.RegisterFlags(sub, c)
-	command.AddCommand(sub)
-	tmp4 := new(DeleteUserCommand)
-	sub = &cobra.Command{
-		Use:   `user ["/users/:userID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp4.Run(c, args) },
 	}
 	tmp4.RegisterFlags(sub, c)
 	command.AddCommand(sub)
-	app.AddCommand(command)
-	command = &cobra.Command{
-		Use:   "show",
-		Short: `show action`,
-	}
-	tmp5 := new(ShowPostCommand)
+	tmp5 := new(DeleteUserCommand)
 	sub = &cobra.Command{
-		Use:   `post ["/posts/:postID"]`,
+		Use:   `user ["/users/:userID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp5.Run(c, args) },
 	}
 	tmp5.RegisterFlags(sub, c)
 	command.AddCommand(sub)
-	tmp6 := new(ShowUserCommand)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "oauth",
+		Short: `OAUTH2 login endpoint`,
+	}
+	tmp6 := new(OauthAuthCommand)
 	sub = &cobra.Command{
-		Use:   `user ["/users/:userID"]`,
+		Use:   `auth ["/auth/:provider"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp6.Run(c, args) },
 	}
@@ -98,24 +103,71 @@ func RegisterCommands(app *cobra.Command, c *client.Client) {
 	command.AddCommand(sub)
 	app.AddCommand(command)
 	command = &cobra.Command{
-		Use:   "update",
-		Short: `update action`,
+		Use:   "refresh",
+		Short: `Obtain a refreshed access token`,
 	}
-	tmp7 := new(UpdatePostCommand)
+	tmp7 := new(RefreshAuthCommand)
 	sub = &cobra.Command{
-		Use:   `post ["/posts/:postID"]`,
+		Use:   `auth ["/auth/refresh"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp7.Run(c, args) },
 	}
 	tmp7.RegisterFlags(sub, c)
 	command.AddCommand(sub)
-	tmp8 := new(UpdateUserCommand)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "show",
+		Short: `show action`,
+	}
+	tmp8 := new(ShowPostCommand)
 	sub = &cobra.Command{
-		Use:   `user ["/users/:userID"]`,
+		Use:   `post ["/posts/:postID"]`,
 		Short: ``,
 		RunE:  func(cmd *cobra.Command, args []string) error { return tmp8.Run(c, args) },
 	}
 	tmp8.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	tmp9 := new(ShowUserCommand)
+	sub = &cobra.Command{
+		Use:   `user ["/users/:userID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp9.Run(c, args) },
+	}
+	tmp9.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "token",
+		Short: `Obtain an access token`,
+	}
+	tmp10 := new(TokenAuthCommand)
+	sub = &cobra.Command{
+		Use:   `auth ["/auth/token"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp10.Run(c, args) },
+	}
+	tmp10.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	app.AddCommand(command)
+	command = &cobra.Command{
+		Use:   "update",
+		Short: `update action`,
+	}
+	tmp11 := new(UpdatePostCommand)
+	sub = &cobra.Command{
+		Use:   `post ["/posts/:postID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp11.Run(c, args) },
+	}
+	tmp11.RegisterFlags(sub, c)
+	command.AddCommand(sub)
+	tmp12 := new(UpdateUserCommand)
+	sub = &cobra.Command{
+		Use:   `user ["/users/:userID"]`,
+		Short: ``,
+		RunE:  func(cmd *cobra.Command, args []string) error { return tmp12.Run(c, args) },
+	}
+	tmp12.RegisterFlags(sub, c)
 	command.AddCommand(sub)
 	app.AddCommand(command)
 

@@ -92,7 +92,7 @@ func (c *UserController) Show(ctx *app.ShowUserContext) error {
 	} else if err != nil {
 		return ErrDatabaseError(err)
 	}
-	user.Href = app.UserHref(user.ID)
+
 	return ctx.OK(user)
 }
 

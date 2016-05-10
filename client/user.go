@@ -15,8 +15,7 @@ type CreateUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email string `json:"email" xml:"email"`
-	// Given name of user
+	Email     string  `json:"email" xml:"email"`
 	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	Password  string  `json:"password" xml:"password"`
 	// Surname of user
@@ -77,7 +76,7 @@ func ShowUserPath(userID int) string {
 	return fmt.Sprintf("/users/%v", userID)
 }
 
-// Retrieve user with given id. IDs 1 and 2 pre-exist in the system.
+// Retrieve user with given id.
 func (c *Client) ShowUser(ctx context.Context, path string) (*http.Response, error) {
 	var body io.Reader
 	scheme := c.Scheme
@@ -99,8 +98,7 @@ type UpdateUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email *string `json:"email,omitempty" xml:"email,omitempty"`
-	// Given name of user
+	Email       *string `json:"email,omitempty" xml:"email,omitempty"`
 	GivenName   *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	NewPassword *string `json:"newPassword,omitempty" xml:"newPassword,omitempty"`
 	OldPassword *string `json:"oldPassword,omitempty" xml:"oldPassword,omitempty"`

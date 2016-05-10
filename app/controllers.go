@@ -3,8 +3,8 @@
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-atlas
-// --design=goa-atlas/design
+// --out=$(GOPATH)/src/goa-blog
+// --design=goa-blog/design
 // --pkg=app
 //
 // The content of this file is auto-generated, DO NOT MODIFY
@@ -32,6 +32,120 @@ func initService(service *goa.Service) {
 	// Setup default encoder and decoder
 	service.Encoder(goa.NewJSONEncoder, "*/*")
 	service.Decoder(goa.NewJSONDecoder, "*/*")
+}
+
+// AuthController is the controller interface for the Auth actions.
+type AuthController interface {
+	goa.Muxer
+	Callback(*CallbackAuthContext) error
+	Oauth(*OauthAuthContext) error
+	Refresh(*RefreshAuthContext) error
+	Token(*TokenAuthContext) error
+}
+
+// MountAuthController "mounts" a Auth resource controller on the given service.
+func MountAuthController(service *goa.Service, ctrl AuthController) {
+	initService(service)
+	var h goa.Handler
+	service.Mux.Handle("OPTIONS", "/auth/:provider/callback", cors.HandlePreflight(service.Context, handleAuthOrigin))
+	service.Mux.Handle("OPTIONS", "/auth/:provider", cors.HandlePreflight(service.Context, handleAuthOrigin))
+	service.Mux.Handle("OPTIONS", "/auth/refresh", cors.HandlePreflight(service.Context, handleAuthOrigin))
+	service.Mux.Handle("OPTIONS", "/auth/token", cors.HandlePreflight(service.Context, handleAuthOrigin))
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		rctx, err := NewCallbackAuthContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Callback(rctx)
+	}
+	h = handleAuthOrigin(h)
+	service.Mux.Handle("GET", "/auth/:provider/callback", ctrl.MuxHandler("Callback", h, nil))
+	service.LogInfo("mount", "ctrl", "Auth", "action", "Callback", "route", "GET /auth/:provider/callback")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		rctx, err := NewOauthAuthContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		return ctrl.Oauth(rctx)
+	}
+	h = handleAuthOrigin(h)
+	service.Mux.Handle("GET", "/auth/:provider", ctrl.MuxHandler("Oauth", h, nil))
+	service.LogInfo("mount", "ctrl", "Auth", "action", "Oauth", "route", "GET /auth/:provider")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		rctx, err := NewRefreshAuthContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*RefreshAuthPayload)
+		}
+		return ctrl.Refresh(rctx)
+	}
+	h = handleAuthOrigin(h)
+	service.Mux.Handle("POST", "/auth/refresh", ctrl.MuxHandler("Refresh", h, unmarshalRefreshAuthPayload))
+	service.LogInfo("mount", "ctrl", "Auth", "action", "Refresh", "route", "POST /auth/refresh")
+
+	h = func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		rctx, err := NewTokenAuthContext(ctx, service)
+		if err != nil {
+			return err
+		}
+		if rawPayload := goa.ContextRequest(ctx).Payload; rawPayload != nil {
+			rctx.Payload = rawPayload.(*TokenAuthPayload)
+		}
+		return ctrl.Token(rctx)
+	}
+	h = handleAuthOrigin(h)
+	service.Mux.Handle("POST", "/auth/token", ctrl.MuxHandler("Token", h, unmarshalTokenAuthPayload))
+	service.LogInfo("mount", "ctrl", "Auth", "action", "Token", "route", "POST /auth/token")
+}
+
+// handleAuthOrigin applies the CORS response headers corresponding to the origin.
+func handleAuthOrigin(h goa.Handler) goa.Handler {
+	return func(ctx context.Context, rw http.ResponseWriter, req *http.Request) error {
+		origin := req.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			return h(ctx, rw, req)
+		}
+		if cors.MatchOrigin(origin, "http://swagger.localhost") {
+			ctx = goa.WithLogContext(ctx, "origin", origin)
+			rw.Header().Set("Access-Control-Allow-Origin", "http://swagger.localhost")
+			rw.Header().Set("Vary", "Origin")
+			rw.Header().Set("Access-Control-Max-Age", "600")
+			rw.Header().Set("Access-Control-Allow-Credentials", "true")
+			if acrm := req.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				rw.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE")
+			}
+			return h(ctx, rw, req)
+		}
+
+		return h(ctx, rw, req)
+	}
+}
+
+// unmarshalRefreshAuthPayload unmarshals the request body into the context request data Payload field.
+func unmarshalRefreshAuthPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &refreshAuthPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
+}
+
+// unmarshalTokenAuthPayload unmarshals the request body into the context request data Payload field.
+func unmarshalTokenAuthPayload(ctx context.Context, service *goa.Service, req *http.Request) error {
+	payload := &tokenAuthPayload{}
+	if err := service.DecodeRequest(req, payload); err != nil {
+		return err
+	}
+	goa.ContextRequest(ctx).Payload = payload.Publicize()
+	return nil
 }
 
 // PostController is the controller interface for the Post actions.

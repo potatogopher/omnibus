@@ -14,7 +14,7 @@ var _ = Resource("user", func() {
 		Routing(
 			GET("/:userID"),
 		)
-		Description("Retrieve user with given id. IDs 1 and 2 pre-exist in the system.")
+		Description("Retrieve user with given id.")
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
@@ -71,6 +71,53 @@ var _ = Resource("user", func() {
 	})
 })
 
+var _ = Resource("auth", func() {
+	DefaultMedia(Authorize)
+	BasePath("/auth")
+	Action("token", func() {
+		Routing(
+			POST("/token"),
+		)
+		Description("Obtain an access token")
+		Payload(Login)
+		Response(Created, func() {
+			Media(Authorize)
+		})
+	})
+	Action("refresh", func() {
+		Routing(
+			POST("/refresh"),
+		)
+		Description("Obtain a refreshed access token")
+		Payload(Login)
+		Response(Created, func() {
+			Media(Authorize)
+		})
+	})
+	Action("callback", func() {
+		Routing(
+			GET("/:provider/callback"),
+		)
+		Description("OAUTH2 callback endpoint")
+		Params(func() {
+			Param("provider", String)
+		})
+		Response(OK, func() {
+			Media("text/html")
+		})
+	})
+	Action("oauth", func() {
+		Routing(
+			GET("/:provider"),
+		)
+		Description("OAUTH2 login endpoint")
+		Params(func() {
+			Param("provider", String)
+		})
+		Response(OK)
+	})
+})
+
 var _ = Resource("post", func() {
 
 	DefaultMedia(User)
@@ -80,7 +127,7 @@ var _ = Resource("post", func() {
 		Routing(
 			GET("/:postID"),
 		)
-		Description("Retrieve post with given id. IDs 1 and 2 pre-exist in the system.")
+		Description("Retrieve post with given id.")
 		Params(func() {
 			Param("postID", Integer, "Post ID")
 		})

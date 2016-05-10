@@ -3,8 +3,8 @@
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-atlas
-// --design=goa-atlas/design
+// --out=$(GOPATH)/src/goa-blog
+// --design=goa-blog/design
 // --pkg=app
 //
 // The content of this file is auto-generated, DO NOT MODIFY
@@ -13,6 +13,30 @@
 package app
 
 import "github.com/goadesign/goa"
+
+// Authorize media type.
+//
+// Identifier: application/vnd.authorize+json
+type Authorize struct {
+	// access token
+	AccessToken *string `json:"access_token,omitempty" xml:"access_token,omitempty"`
+	// Time to expiration in seconds
+	ExpiresIn *int `json:"expires_in,omitempty" xml:"expires_in,omitempty"`
+	// type of token
+	TokenType *string `json:"token_type,omitempty" xml:"token_type,omitempty"`
+}
+
+// Login media type.
+//
+// Identifier: application/vnd.login+json
+type Login struct {
+	// UUID of requesting application
+	Application *string `json:"application,omitempty" xml:"application,omitempty"`
+	// email
+	Email *string `json:"email,omitempty" xml:"email,omitempty"`
+	// password
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
 
 // Post media type.
 //
@@ -71,7 +95,7 @@ type User struct {
 	// Email of user
 	Email string `json:"email" xml:"email"`
 	// Given name of user
-	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
+	GivenName *string `json:"given_name,omitempty" xml:"given_name,omitempty"`
 	// API href of the user
 	Href string `json:"href" xml:"href"`
 	// ID of user

@@ -70,7 +70,7 @@ func ShowPostPath(postID int) string {
 	return fmt.Sprintf("/posts/%v", postID)
 }
 
-// Retrieve post with given id. IDs 1 and 2 pre-exist in the system.
+// Retrieve post with given id.
 func (c *Client) ShowPost(ctx context.Context, path string) (*http.Response, error) {
 	var body io.Reader
 	scheme := c.Scheme

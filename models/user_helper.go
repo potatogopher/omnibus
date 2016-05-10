@@ -3,8 +3,8 @@
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-atlas
-// --design=goa-atlas/design
+// --out=$(GOPATH)/src/goa-blog
+// --design=goa-blog/design
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -46,6 +46,7 @@ func (m *User) UserToUser() *app.User {
 	user := &app.User{}
 	user.Disabled = m.Disabled
 	user.Email = m.Email
+	user.GivenName = &m.GivenName
 	user.ID = m.ID
 	user.Surname = &m.Surname
 

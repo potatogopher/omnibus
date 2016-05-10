@@ -30,8 +30,7 @@ func (c *PostController) Delete(ctx *app.DeletePostContext) error {
 // Show runs the show action.
 func (c *PostController) Show(ctx *app.ShowPostContext) error {
 	// TBD: implement
-	res := &app.User{}
-	return ctx.OK(res)
+	return nil
 }
 
 // Update runs the update action.

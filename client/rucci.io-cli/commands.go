@@ -6,13 +6,29 @@ import (
 	"github.com/goadesign/goa"
 	goaclient "github.com/goadesign/goa/client"
 	"github.com/spf13/cobra"
-	"goa-atlas/client"
+	"goa-blog/client"
 	"golang.org/x/net/context"
 	"log"
 	"os"
 )
 
 type (
+	// CallbackAuthCommand is the command line data structure for the callback action of auth
+	CallbackAuthCommand struct {
+		Provider string
+	}
+	// OauthAuthCommand is the command line data structure for the oauth action of auth
+	OauthAuthCommand struct {
+		Provider string
+	}
+	// RefreshAuthCommand is the command line data structure for the refresh action of auth
+	RefreshAuthCommand struct {
+		Payload string
+	}
+	// TokenAuthCommand is the command line data structure for the token action of auth
+	TokenAuthCommand struct {
+		Payload string
+	}
 	// CreatePostCommand is the command line data structure for the create action of post
 	CreatePostCommand struct {
 		Payload string
@@ -54,6 +70,122 @@ type (
 		UserID int
 	}
 )
+
+// Run makes the HTTP request corresponding to the CallbackAuthCommand command.
+func (cmd *CallbackAuthCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/auth/%v/callback", cmd.Provider)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.CallbackAuth(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *CallbackAuthCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var provider string
+	cc.Flags().StringVar(&cmd.Provider, "provider", provider, ``)
+}
+
+// Run makes the HTTP request corresponding to the OauthAuthCommand command.
+func (cmd *OauthAuthCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/auth/%v", cmd.Provider)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.OauthAuth(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *OauthAuthCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var provider string
+	cc.Flags().StringVar(&cmd.Provider, "provider", provider, ``)
+}
+
+// Run makes the HTTP request corresponding to the RefreshAuthCommand command.
+func (cmd *RefreshAuthCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/auth/refresh"
+	}
+	var payload client.RefreshAuthPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.RefreshAuth(ctx, path, &payload)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *RefreshAuthCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
+}
+
+// Run makes the HTTP request corresponding to the TokenAuthCommand command.
+func (cmd *TokenAuthCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/auth/token"
+	}
+	var payload client.TokenAuthPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.TokenAuth(ctx, path, &payload)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *TokenAuthCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
+}
 
 // Run makes the HTTP request corresponding to the CreatePostCommand command.
 func (cmd *CreatePostCommand) Run(c *client.Client, args []string) error {

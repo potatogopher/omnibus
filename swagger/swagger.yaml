@@ -5,6 +5,28 @@ consumes:
 - application/gob
 - application/x-gob
 definitions:
+  Authorize:
+    description: Token authorization response
+    example:
+      access_token: Et consectetur non qui reiciendis voluptatem.
+      expires_in: 6.0189097e+18
+      token_type: Quam consequatur et ut magnam velit.
+    properties:
+      access_token:
+        description: access token
+        example: Et quis.
+        type: string
+      expires_in:
+        description: Time to expiration in seconds
+        example: 3.464305e+18
+        format: int64
+        type: integer
+      token_type:
+        description: type of token
+        example: Et magnam blanditiis repellat quia quo iure.
+        type: string
+    title: 'Mediatype identifier: application/vnd.authorize+json'
+    type: object
   CreatePostPayload:
     properties:
       content:
@@ -26,7 +48,6 @@ definitions:
         format: email
         type: string
       givenName:
-        description: Given name of user
         type: string
       password:
         type: string
@@ -37,6 +58,32 @@ definitions:
     - email
     - password
     title: CreateUserPayload
+    type: object
+  RefreshAuthPayload:
+    properties:
+      application:
+        description: UUID of requesting application
+        type: string
+      email:
+        description: email
+        type: string
+      password:
+        description: password
+        type: string
+    title: RefreshAuthPayload
+    type: object
+  TokenAuthPayload:
+    properties:
+      application:
+        description: UUID of requesting application
+        type: string
+      email:
+        description: email
+        type: string
+      password:
+        description: password
+        type: string
+    title: TokenAuthPayload
     type: object
   UpdatePostPayload:
     properties:
@@ -56,7 +103,6 @@ definitions:
         format: email
         type: string
       givenName:
-        description: Given name of user
         type: string
       newPassword:
         type: string
@@ -70,14 +116,14 @@ definitions:
   User:
     description: A user account
     example:
-      disabled: true
-      email: Odit optio hic.
-      givenName: Quos harum dolores eos nobis fugit.
-      href: Necessitatibus veritatis.
-      id: 8.6423983e+18
-      passwordHash: Et harum.
-      passwordSalt: Magnam illum exercitationem sed doloremque sint ipsam.
-      surname: Rerum voluptas.
+      disabled: false
+      email: Voluptates ducimus.
+      given_name: Tempora quis ducimus consequatur excepturi vel et.
+      href: Est voluptas aliquid dolorem.
+      id: 1.1933749e+18
+      passwordHash: Occaecati molestias facere molestiae quia.
+      passwordSalt: Sed excepturi ducimus aut tempore deleniti.
+      surname: Minima enim inventore molestias quia iusto.
     properties:
       disabled:
         description: Flag for if the user is disabled or not
@@ -85,33 +131,33 @@ definitions:
         type: boolean
       email:
         description: Email of user
-        example: zola@morissette.biz
+        example: theron_maggio@ohararuecker.org
         format: email
         type: string
-      givenName:
+      given_name:
         description: Given name of user
-        example: Nobis ut fuga nihil consectetur corporis.
+        example: Doloremque sint ipsam aut rerum voluptas.
         type: string
       href:
         description: API href of the user
-        example: Placeat reiciendis sed.
+        example: Ab amet occaecati ut voluptates.
         type: string
       id:
         description: ID of user
-        example: 1.0114296e+17
+        example: 1.3749972e+18
         format: int64
         type: integer
       passwordHash:
         description: Hashed password of user
-        example: Cumque molestiae nulla fuga.
+        example: Optio accusantium qui.
         type: string
       passwordSalt:
         description: Salted password of user
-        example: Nulla porro et.
+        example: Voluptatem odit nemo commodi asperiores non.
         type: string
       surname:
         description: Surname of user
-        example: Dolor fugiat impedit nesciunt occaecati.
+        example: Repellendus rem possimus soluta voluptatem odit sint.
         type: string
     required:
     - id
@@ -135,6 +181,70 @@ info:
   title: rucci.io
   version: ""
 paths:
+  auth/{provider}:
+    get:
+      description: OAUTH2 login endpoint
+      operationId: auth#oauth
+      parameters:
+      - in: path
+        name: provider
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Authorize'
+      schemes:
+      - http
+  auth/{provider}/callback:
+    get:
+      description: OAUTH2 callback endpoint
+      operationId: auth#callback
+      parameters:
+      - in: path
+        name: provider
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+      schemes:
+      - http
+  auth/refresh:
+    post:
+      description: Obtain a refreshed access token
+      operationId: auth#refresh
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/RefreshAuthPayload'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Authorize'
+      schemes:
+      - http
+  auth/token:
+    post:
+      description: Obtain an access token
+      operationId: auth#token
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/TokenAuthPayload'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Authorize'
+      schemes:
+      - http
   posts:
     post:
       description: Create new post
@@ -172,7 +282,7 @@ paths:
       schemes:
       - http
     get:
-      description: Retrieve post with given id. IDs 1 and 2 pre-exist in the system.
+      description: Retrieve post with given id.
       operationId: post#show
       parameters:
       - description: Post ID
@@ -247,7 +357,7 @@ paths:
       schemes:
       - http
     get:
-      description: Retrieve user with given id. IDs 1 and 2 pre-exist in the system.
+      description: Retrieve user with given id.
       operationId: user#show
       parameters:
       - description: User ID
@@ -298,7 +408,7 @@ responses:
   OK:
     description: OK
     schema:
-      $ref: '#/definitions/User'
+      $ref: '#/definitions/Authorize'
 schemes:
 - http
 swagger: "2.0"

@@ -3,8 +3,8 @@
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-atlas
-// --design=goa-atlas/design
+// --out=$(GOPATH)/src/goa-blog
+// --design=goa-blog/design
 // --pkg=app
 //
 // The content of this file is auto-generated, DO NOT MODIFY
@@ -17,6 +17,184 @@ import (
 	"golang.org/x/net/context"
 	"strconv"
 )
+
+// CallbackAuthContext provides the auth callback action context.
+type CallbackAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service  *goa.Service
+	Provider string
+}
+
+// NewCallbackAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller callback action.
+func NewCallbackAuthContext(ctx context.Context, service *goa.Service) (*CallbackAuthContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := CallbackAuthContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	paramProvider := req.Params["provider"]
+	if len(paramProvider) > 0 {
+		rawProvider := paramProvider[0]
+		rctx.Provider = rawProvider
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *CallbackAuthContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "text/html")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
+}
+
+// OauthAuthContext provides the auth oauth action context.
+type OauthAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service  *goa.Service
+	Provider string
+}
+
+// NewOauthAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller oauth action.
+func NewOauthAuthContext(ctx context.Context, service *goa.Service) (*OauthAuthContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := OauthAuthContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	paramProvider := req.Params["provider"]
+	if len(paramProvider) > 0 {
+		rawProvider := paramProvider[0]
+		rctx.Provider = rawProvider
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *OauthAuthContext) OK(r *Authorize) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize")
+	return ctx.Service.Send(ctx.Context, 200, r)
+}
+
+// RefreshAuthContext provides the auth refresh action context.
+type RefreshAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	Payload *RefreshAuthPayload
+}
+
+// NewRefreshAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller refresh action.
+func NewRefreshAuthContext(ctx context.Context, service *goa.Service) (*RefreshAuthContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := RefreshAuthContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	return &rctx, err
+}
+
+// refreshAuthPayload is the auth refresh action payload.
+type refreshAuthPayload struct {
+	// UUID of requesting application
+	Application *string `json:"application,omitempty" xml:"application,omitempty"`
+	// email
+	Email *string `json:"email,omitempty" xml:"email,omitempty"`
+	// password
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Publicize creates RefreshAuthPayload from refreshAuthPayload
+func (payload *refreshAuthPayload) Publicize() *RefreshAuthPayload {
+	var pub RefreshAuthPayload
+	if payload.Application != nil {
+		pub.Application = payload.Application
+	}
+	if payload.Email != nil {
+		pub.Email = payload.Email
+	}
+	if payload.Password != nil {
+		pub.Password = payload.Password
+	}
+	return &pub
+}
+
+// RefreshAuthPayload is the auth refresh action payload.
+type RefreshAuthPayload struct {
+	// UUID of requesting application
+	Application *string `json:"application,omitempty" xml:"application,omitempty"`
+	// email
+	Email *string `json:"email,omitempty" xml:"email,omitempty"`
+	// password
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *RefreshAuthContext) Created(r *Authorize) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize+json")
+	return ctx.Service.Send(ctx.Context, 201, r)
+}
+
+// TokenAuthContext provides the auth token action context.
+type TokenAuthContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	Payload *TokenAuthPayload
+}
+
+// NewTokenAuthContext parses the incoming request URL and body, performs validations and creates the
+// context used by the auth controller token action.
+func NewTokenAuthContext(ctx context.Context, service *goa.Service) (*TokenAuthContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := TokenAuthContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	return &rctx, err
+}
+
+// tokenAuthPayload is the auth token action payload.
+type tokenAuthPayload struct {
+	// UUID of requesting application
+	Application *string `json:"application,omitempty" xml:"application,omitempty"`
+	// email
+	Email *string `json:"email,omitempty" xml:"email,omitempty"`
+	// password
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Publicize creates TokenAuthPayload from tokenAuthPayload
+func (payload *tokenAuthPayload) Publicize() *TokenAuthPayload {
+	var pub TokenAuthPayload
+	if payload.Application != nil {
+		pub.Application = payload.Application
+	}
+	if payload.Email != nil {
+		pub.Email = payload.Email
+	}
+	if payload.Password != nil {
+		pub.Password = payload.Password
+	}
+	return &pub
+}
+
+// TokenAuthPayload is the auth token action payload.
+type TokenAuthPayload struct {
+	// UUID of requesting application
+	Application *string `json:"application,omitempty" xml:"application,omitempty"`
+	// email
+	Email *string `json:"email,omitempty" xml:"email,omitempty"`
+	// password
+	Password *string `json:"password,omitempty" xml:"password,omitempty"`
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *TokenAuthContext) Created(r *Authorize) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize+json")
+	return ctx.Service.Send(ctx.Context, 201, r)
+}
 
 // CreatePostContext provides the post create action context.
 type CreatePostContext struct {
@@ -158,13 +336,13 @@ func NewShowPostContext(ctx context.Context, service *goa.Service) (*ShowPostCon
 
 // OK sends a HTTP response with status code 200.
 func (ctx *ShowPostContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *ShowPostContext) OKTiny(r *UserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
@@ -261,8 +439,7 @@ type createUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email *string `json:"email,omitempty" xml:"email,omitempty"`
-	// Given name of user
+	Email     *string `json:"email,omitempty" xml:"email,omitempty"`
 	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	Password  *string `json:"password,omitempty" xml:"password,omitempty"`
 	// Surname of user
@@ -312,8 +489,7 @@ type CreateUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email string `json:"email" xml:"email"`
-	// Given name of user
+	Email     string  `json:"email" xml:"email"`
 	GivenName *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	Password  string  `json:"password" xml:"password"`
 	// Surname of user
@@ -409,13 +585,13 @@ func NewShowUserContext(ctx context.Context, service *goa.Service) (*ShowUserCon
 
 // OK sends a HTTP response with status code 200.
 func (ctx *ShowUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *ShowUserContext) OKTiny(r *UserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
@@ -458,8 +634,7 @@ type updateUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email *string `json:"email,omitempty" xml:"email,omitempty"`
-	// Given name of user
+	Email       *string `json:"email,omitempty" xml:"email,omitempty"`
 	GivenName   *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	NewPassword *string `json:"newPassword,omitempty" xml:"newPassword,omitempty"`
 	OldPassword *string `json:"oldPassword,omitempty" xml:"oldPassword,omitempty"`
@@ -506,8 +681,7 @@ type UpdateUserPayload struct {
 	// Flag for if the user is disabled or not
 	Disabled *bool `json:"disabled,omitempty" xml:"disabled,omitempty"`
 	// Email of user
-	Email *string `json:"email,omitempty" xml:"email,omitempty"`
-	// Given name of user
+	Email       *string `json:"email,omitempty" xml:"email,omitempty"`
 	GivenName   *string `json:"givenName,omitempty" xml:"givenName,omitempty"`
 	NewPassword *string `json:"newPassword,omitempty" xml:"newPassword,omitempty"`
 	OldPassword *string `json:"oldPassword,omitempty" xml:"oldPassword,omitempty"`

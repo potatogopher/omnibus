@@ -63,9 +63,15 @@ func main() {
 	// Mount "user" controller
 	c := NewUserController(service)
 	app.MountUserController(service, c)
+
 	// Mount "post" controller
 	pc := NewPostController(service)
 	app.MountPostController(service, pc)
+
+	// mount "auth" controller
+	ac := NewAuthController(service)
+	app.MountAuthController(service, ac)
+
 	// Mount Swagger spec provider controller
 	swagger.MountController(service)
 

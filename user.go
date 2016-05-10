@@ -86,7 +86,7 @@ func (c *UserController) Delete(ctx *app.DeleteUserContext) error {
 
 // Show runs the show action.
 func (c *UserController) Show(ctx *app.ShowUserContext) error {
-	user, err := udb.OneAtlasUser(ctx.Context, ctx.UserID)
+	user, err := udb.OneRucciUser(ctx.Context, ctx.UserID)
 	if err == gorm.ErrRecordNotFound {
 		return ctx.NotFound()
 	} else if err != nil {

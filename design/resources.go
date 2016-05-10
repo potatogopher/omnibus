@@ -71,56 +71,9 @@ var _ = Resource("user", func() {
 	})
 })
 
-var _ = Resource("auth", func() {
-	DefaultMedia(Authorize)
-	BasePath("/auth")
-	Action("token", func() {
-		Routing(
-			POST("/token"),
-		)
-		Description("Obtain an access token")
-		Payload(Login)
-		Response(Created, func() {
-			Media(Authorize)
-		})
-	})
-	Action("refresh", func() {
-		Routing(
-			POST("/refresh"),
-		)
-		Description("Obtain a refreshed access token")
-		Payload(Login)
-		Response(Created, func() {
-			Media(Authorize)
-		})
-	})
-	Action("callback", func() {
-		Routing(
-			GET("/:provider/callback"),
-		)
-		Description("OAUTH2 callback endpoint")
-		Params(func() {
-			Param("provider", String)
-		})
-		Response(OK, func() {
-			Media("text/html")
-		})
-	})
-	Action("oauth", func() {
-		Routing(
-			GET("/:provider"),
-		)
-		Description("OAUTH2 login endpoint")
-		Params(func() {
-			Param("provider", String)
-		})
-		Response(OK)
-	})
-})
-
 var _ = Resource("post", func() {
 
-	DefaultMedia(User)
+	DefaultMedia(Post)
 	BasePath("/posts")
 
 	Action("show", func() {

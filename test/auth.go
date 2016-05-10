@@ -12,13 +12,13 @@ import (
 	"testing"
 )
 
-// TokenAuthCreated test setup
-func TokenAuthCreated(t *testing.T, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
-	return TokenAuthCreatedCtx(t, context.Background(), ctrl, payload)
+// TokenAuthOK test setup
+func TokenAuthOK(t *testing.T, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
+	return TokenAuthOKCtx(t, context.Background(), ctrl, payload)
 }
 
-// TokenAuthCreatedCtx test setup
-func TokenAuthCreatedCtx(t *testing.T, ctx context.Context, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
+// TokenAuthOKCtx test setup
+func TokenAuthOKCtx(t *testing.T, ctx context.Context, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
 	err := payload.Validate()
 	if err != nil {
 		panic(err)
@@ -49,8 +49,8 @@ func TokenAuthCreatedCtx(t *testing.T, ctx context.Context, ctrl app.AuthControl
 		t.Errorf("invalid response media: got %+v, expected instance of app.Authorize", resp)
 	}
 
-	if rw.Code != 201 {
-		t.Errorf("invalid response status code: got %+v, expected 201", rw.Code)
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
 	return a
 

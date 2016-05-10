@@ -85,9 +85,7 @@ var _ = Resource("auth", func() {
 			Required("email")
 			Required("password")
 		})
-		Response(Created, func() {
-			Media(Authorize)
-		})
+		Response(OK)
 	})
 })
 

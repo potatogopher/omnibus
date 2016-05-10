@@ -84,10 +84,10 @@ func (payload *TokenAuthPayload) Validate() (err error) {
 	return err
 }
 
-// Created sends a HTTP response with status code 201.
-func (ctx *TokenAuthContext) Created(r *Authorize) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize+json")
-	return ctx.Service.Send(ctx.Context, 201, r)
+// OK sends a HTTP response with status code 200.
+func (ctx *TokenAuthContext) OK(r *Authorize) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize")
+	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // CreatePostContext provides the post create action context.

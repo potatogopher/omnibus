@@ -212,8 +212,8 @@ paths:
         schema:
           $ref: '#/definitions/TokenAuthPayload'
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/Authorize'
       schemes:
@@ -394,7 +394,7 @@ responses:
   OK:
     description: OK
     schema:
-      $ref: '#/definitions/Post'
+      $ref: '#/definitions/Authorize'
 schemes:
 - http
 securityDefinitions:

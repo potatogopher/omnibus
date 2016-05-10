@@ -1,8 +1,13 @@
 package main
 
 import (
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/goadesign/goa"
+
 	"goa-blog/app"
+	"goa-blog/resources/config"
 )
 
 // AuthController implements the auth resource.
@@ -17,6 +22,20 @@ func NewAuthController(service *goa.Service) *AuthController {
 
 // Token runs the token action.
 func (c *AuthController) Token(ctx *app.TokenAuthContext) error {
-	// TBD: implement
-	return nil
+	token := jwt.New(jwt.SigningMethodRS256)
+	token.Claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(config.RSAPrivateKey))
+	if err != nil {
+		return err
+	}
+	tokenStr, err := token.SignedString(key)
+	if err != nil {
+		return err
+	}
+
+	authToken := app.Authorize{}
+	authToken.AccessToken = &tokenStr
+
+	return ctx.OK(&authToken)
 }

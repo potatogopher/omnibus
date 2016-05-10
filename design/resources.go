@@ -75,6 +75,7 @@ var _ = Resource("post", func() {
 
 	DefaultMedia(Post)
 	BasePath("/posts")
+	Security("jwt")
 
 	Action("show", func() {
 		Routing(

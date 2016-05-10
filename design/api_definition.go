@@ -34,6 +34,12 @@ var _ = API("rucci.io", func() {
 		MaxAge(600)
 		Credentials()
 	})
+	JWTSecurity("jwt", func() {
+		Header("Authorization")
+		TokenURL("<a href='http://example.com/token'>http://example.com/token</a>")
+		Scope("post:write", "Write to the system")
+		Scope("post:read", "Read anything in there")
+	})
 	ResponseTemplate(Created, func(pattern string) {
 		Description("Resource created")
 		Status(201)

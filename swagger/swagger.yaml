@@ -5,60 +5,16 @@ consumes:
 - application/gob
 - application/x-gob
 definitions:
-  AtlasUser:
-    description: A user account
-    example:
-      disabled: true
-      email: Recusandae eum.
-      givenName: Rerum sit voluptatem.
-      href: A eaque voluptatem quasi et facilis et.
-      id: 8.499419e+18
-      passwordHash: Omnis ut.
-      passwordSalt: Aspernatur debitis qui voluptates.
-      surname: Laborum ex fuga rem.
+  CreatePostPayload:
     properties:
-      disabled:
-        description: Flag for if the user is disabled or not
-        example: false
-        type: boolean
-      email:
-        description: Email of user
-        example: romaine@gislason.com
-        format: email
+      content:
         type: string
-      givenName:
-        description: Given name of user
-        example: Error aut quia.
-        type: string
-      href:
-        description: API href of the user
-        example: Possimus et quisquam voluptatem eum.
-        type: string
-      id:
-        description: ID of user
-        example: 8.8469735e+18
-        format: int64
-        type: integer
-      passwordHash:
-        description: Hashed password of user
-        example: Soluta optio quaerat ex repellat voluptas.
-        type: string
-      passwordSalt:
-        description: Salted password of user
-        example: Numquam voluptatem aut.
-        type: string
-      surname:
-        description: Surname of user
-        example: Et repudiandae aliquam omnis unde aut.
+      title:
         type: string
     required:
-    - id
-    - href
-    - email
-    - passwordSalt
-    - passwordHash
-    - disabled
-    title: 'Mediatype identifier: application/atlas.user+json'
+    - title
+    - content
+    title: CreatePostPayload
     type: object
   CreateUserPayload:
     properties:
@@ -81,6 +37,69 @@ definitions:
     - email
     - password
     title: CreateUserPayload
+    type: object
+  RucciUser:
+    description: A user account
+    example:
+      disabled: true
+      email: Odit optio hic.
+      givenName: Quos harum dolores eos nobis fugit.
+      href: Necessitatibus veritatis.
+      id: 8.6423983e+18
+      passwordHash: Et harum.
+      passwordSalt: Magnam illum exercitationem sed doloremque sint ipsam.
+      surname: Rerum voluptas.
+    properties:
+      disabled:
+        description: Flag for if the user is disabled or not
+        example: true
+        type: boolean
+      email:
+        description: Email of user
+        example: zola@morissette.biz
+        format: email
+        type: string
+      givenName:
+        description: Given name of user
+        example: Nobis ut fuga nihil consectetur corporis.
+        type: string
+      href:
+        description: API href of the user
+        example: Placeat reiciendis sed.
+        type: string
+      id:
+        description: ID of user
+        example: 1.0114296e+17
+        format: int64
+        type: integer
+      passwordHash:
+        description: Hashed password of user
+        example: Cumque molestiae nulla fuga.
+        type: string
+      passwordSalt:
+        description: Salted password of user
+        example: Nulla porro et.
+        type: string
+      surname:
+        description: Surname of user
+        example: Dolor fugiat impedit nesciunt occaecati.
+        type: string
+    required:
+    - id
+    - href
+    - email
+    - passwordSalt
+    - passwordHash
+    - disabled
+    title: 'Mediatype identifier: application/rucci.user+json'
+    type: object
+  UpdatePostPayload:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    title: UpdatePostPayload
     type: object
   UpdateUserPayload:
     properties:
@@ -106,16 +125,91 @@ definitions:
 host: localhost
 info:
   contact:
-    email: nick@rocketmade.com
+    email: nick@rucci.io
     name: Nick Rucci
     url: http://rucci.io
-  description: Project Management Application
+  description: Blog for Nick Rucci
   license:
     name: MIT
     url: https://github.com/nicholasrucci/goa-atlas/blob/master/LICENSE
-  title: Atlas
+  title: rucci.io
   version: ""
 paths:
+  posts:
+    post:
+      description: Create new post
+      operationId: post#create
+      parameters:
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreatePostPayload'
+      responses:
+        "201":
+          description: Resource created
+          headers:
+            Location:
+              description: href to created resource
+              pattern: /posts/[0-9]+
+              type: string
+      schemes:
+      - http
+  posts/{postID}:
+    delete:
+      operationId: post#delete
+      parameters:
+      - description: Post ID
+        in: path
+        name: postID
+        required: true
+        type: integer
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      schemes:
+      - http
+    get:
+      description: Retrieve post with given id. IDs 1 and 2 pre-exist in the system.
+      operationId: post#show
+      parameters:
+      - description: Post ID
+        in: path
+        name: postID
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/RucciUser'
+        "404":
+          description: Not Found
+      schemes:
+      - http
+    put:
+      description: Change post attributes
+      operationId: post#update
+      parameters:
+      - description: Post ID
+        in: path
+        name: postID
+        required: true
+        type: integer
+      - in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/UpdatePostPayload'
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      schemes:
+      - http
   users:
     post:
       description: Create new user
@@ -165,7 +259,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/AtlasUser'
+            $ref: '#/definitions/RucciUser'
         "404":
           description: Not Found
       schemes:
@@ -204,7 +298,7 @@ responses:
   OK:
     description: OK
     schema:
-      $ref: '#/definitions/AtlasUser'
+      $ref: '#/definitions/RucciUser'
 schemes:
 - http
 swagger: "2.0"

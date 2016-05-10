@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Application Media Types
+// API "rucci.io": Application Media Types
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
@@ -14,10 +14,58 @@ package app
 
 import "github.com/goadesign/goa"
 
-// AtlasUser media type.
+// RucciPost media type.
 //
-// Identifier: application/atlas.user+json
-type AtlasUser struct {
+// Identifier: application/rucci.post+json
+type RucciPost struct {
+	// Content of the blog post
+	Content string `json:"content" xml:"content"`
+	// API href of the post
+	Href string `json:"href" xml:"href"`
+	// ID of post
+	ID int `json:"id" xml:"id"`
+	// Title of the blog post
+	Title string `json:"title" xml:"title"`
+}
+
+// Validate validates the RucciPost media type instance.
+func (mt *RucciPost) Validate() (err error) {
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+	if mt.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "title"))
+	}
+	if mt.Content == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "content"))
+	}
+
+	return err
+}
+
+// RucciPostLink media type.
+//
+// Identifier: application/rucci.post+json
+type RucciPostLink struct {
+	// API href of the post
+	Href string `json:"href" xml:"href"`
+	// ID of post
+	ID int `json:"id" xml:"id"`
+}
+
+// Validate validates the RucciPostLink media type instance.
+func (mt *RucciPostLink) Validate() (err error) {
+	if mt.Href == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
+	}
+
+	return err
+}
+
+// RucciUser media type.
+//
+// Identifier: application/rucci.user+json
+type RucciUser struct {
 	// Flag for if the user is disabled or not
 	Disabled bool `json:"disabled" xml:"disabled"`
 	// Email of user
@@ -32,8 +80,8 @@ type AtlasUser struct {
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
 }
 
-// Validate validates the AtlasUser media type instance.
-func (mt *AtlasUser) Validate() (err error) {
+// Validate validates the RucciUser media type instance.
+func (mt *RucciUser) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -47,18 +95,18 @@ func (mt *AtlasUser) Validate() (err error) {
 	return err
 }
 
-// AtlasUserLink media type.
+// RucciUserLink media type.
 //
-// Identifier: application/atlas.user+json
-type AtlasUserLink struct {
+// Identifier: application/rucci.user+json
+type RucciUserLink struct {
 	// API href of the user
 	Href string `json:"href" xml:"href"`
 	// ID of user
 	ID int `json:"id" xml:"id"`
 }
 
-// Validate validates the AtlasUserLink media type instance.
-func (mt *AtlasUserLink) Validate() (err error) {
+// Validate validates the RucciUserLink media type instance.
+func (mt *RucciUserLink) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -66,10 +114,10 @@ func (mt *AtlasUserLink) Validate() (err error) {
 	return err
 }
 
-// AtlasUserTiny media type.
+// RucciUserTiny media type.
 //
-// Identifier: application/atlas.user+json
-type AtlasUserTiny struct {
+// Identifier: application/rucci.user+json
+type RucciUserTiny struct {
 	// Email of user
 	Email string `json:"email" xml:"email"`
 	// API href of the user
@@ -78,8 +126,8 @@ type AtlasUserTiny struct {
 	ID int `json:"id" xml:"id"`
 }
 
-// Validate validates the AtlasUserTiny media type instance.
-func (mt *AtlasUserTiny) Validate() (err error) {
+// Validate validates the RucciUserTiny media type instance.
+func (mt *RucciUserTiny) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}

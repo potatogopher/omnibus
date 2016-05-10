@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Models
+// API "rucci.io": Models
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
@@ -29,6 +29,7 @@ type User struct {
 	GivenName    string
 	PasswordHash string
 	PasswordSalt string
+	Posts        []Post // has many Posts
 	Surname      string
 	UpdatedAt    time.Time
 }
@@ -65,14 +66,14 @@ type UserStorage interface {
 	Update(ctx context.Context, user *User) error
 	Delete(ctx context.Context, id int) error
 
-	ListAtlasUser(ctx context.Context) []*app.AtlasUser
-	OneAtlasUser(ctx context.Context, id int) (*app.AtlasUser, error)
+	ListRucciUser(ctx context.Context) []*app.RucciUser
+	OneRucciUser(ctx context.Context, id int) (*app.RucciUser, error)
 
-	ListAtlasUserLink(ctx context.Context) []*app.AtlasUserLink
-	OneAtlasUserLink(ctx context.Context, id int) (*app.AtlasUserLink, error)
+	ListRucciUserLink(ctx context.Context) []*app.RucciUserLink
+	OneRucciUserLink(ctx context.Context, id int) (*app.RucciUserLink, error)
 
-	ListAtlasUserTiny(ctx context.Context) []*app.AtlasUserTiny
-	OneAtlasUserTiny(ctx context.Context, id int) (*app.AtlasUserTiny, error)
+	ListRucciUserTiny(ctx context.Context) []*app.RucciUserTiny
+	OneRucciUserTiny(ctx context.Context, id int) (*app.RucciUserTiny, error)
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name

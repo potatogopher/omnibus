@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Client is the Atlas service client.
+// Client is the rucci.io service client.
 type Client struct {
 	*goaclient.Client
 }

@@ -13,6 +13,26 @@ import (
 )
 
 type (
+	// CreatePostCommand is the command line data structure for the create action of post
+	CreatePostCommand struct {
+		Payload string
+	}
+	// DeletePostCommand is the command line data structure for the delete action of post
+	DeletePostCommand struct {
+		// Post ID
+		PostID int
+	}
+	// ShowPostCommand is the command line data structure for the show action of post
+	ShowPostCommand struct {
+		// Post ID
+		PostID int
+	}
+	// UpdatePostCommand is the command line data structure for the update action of post
+	UpdatePostCommand struct {
+		Payload string
+		// Post ID
+		PostID int
+	}
 	// CreateUserCommand is the command line data structure for the create action of user
 	CreateUserCommand struct {
 		Payload string
@@ -34,6 +54,124 @@ type (
 		UserID int
 	}
 )
+
+// Run makes the HTTP request corresponding to the CreatePostCommand command.
+func (cmd *CreatePostCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = "/posts"
+	}
+	var payload client.CreatePostPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.CreatePost(ctx, path, &payload)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *CreatePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
+}
+
+// Run makes the HTTP request corresponding to the DeletePostCommand command.
+func (cmd *DeletePostCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/posts/%v", cmd.PostID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.DeletePost(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *DeletePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var postID int
+	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+}
+
+// Run makes the HTTP request corresponding to the ShowPostCommand command.
+func (cmd *ShowPostCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/posts/%v", cmd.PostID)
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.ShowPost(ctx, path)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *ShowPostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	var postID int
+	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+}
+
+// Run makes the HTTP request corresponding to the UpdatePostCommand command.
+func (cmd *UpdatePostCommand) Run(c *client.Client, args []string) error {
+	var path string
+	if len(args) > 0 {
+		path = args[0]
+	} else {
+		path = fmt.Sprintf("/posts/%v", cmd.PostID)
+	}
+	var payload client.UpdatePostPayload
+	if cmd.Payload != "" {
+		err := json.Unmarshal([]byte(cmd.Payload), &payload)
+		if err != nil {
+			return fmt.Errorf("failed to deserialize payload: %s", err)
+		}
+	}
+	logger := goa.NewLogger(log.New(os.Stderr, "", log.LstdFlags))
+	ctx := goa.WithLogger(context.Background(), logger)
+	resp, err := c.UpdatePost(ctx, path, &payload)
+	if err != nil {
+		goa.LogError(ctx, "failed", "err", err)
+		return err
+	}
+
+	goaclient.HandleResponse(c.Client, resp, PrettyPrint)
+	return nil
+}
+
+// RegisterFlags registers the command flags with the command line.
+func (cmd *UpdatePostCommand) RegisterFlags(cc *cobra.Command, c *client.Client) {
+	cc.Flags().StringVar(&cmd.Payload, "payload", "", "Request JSON body")
+	var postID int
+	cc.Flags().IntVar(&cmd.PostID, "postID", postID, `Post ID`)
+}
 
 // Run makes the HTTP request corresponding to the CreateUserCommand command.
 func (cmd *CreateUserCommand) Run(c *client.Client, args []string) error {

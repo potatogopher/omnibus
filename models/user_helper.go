@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Model Helpers
+// API "rucci.io": Model Helpers
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
@@ -21,12 +21,12 @@ import (
 
 // MediaType Retrieval Functions
 
-// ListAtlasUser returns an array of view: default.
-func (m *UserDB) ListAtlasUser(ctx context.Context) []*app.AtlasUser {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "listatlasUser"}, time.Now())
+// ListRucciUser returns an array of view: default.
+func (m *UserDB) ListRucciUser(ctx context.Context) []*app.RucciUser {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUser"}, time.Now())
 
 	var native []*User
-	var objs []*app.AtlasUser
+	var objs []*app.RucciUser
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -35,48 +35,47 @@ func (m *UserDB) ListAtlasUser(ctx context.Context) []*app.AtlasUser {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToAtlasUser())
+		objs = append(objs, t.UserToRucciUser())
 	}
 
 	return objs
 }
 
-// UserToAtlasUser returns the AtlasUser representation of User.
-func (m *User) UserToAtlasUser() *app.AtlasUser {
-	user := &app.AtlasUser{}
+// UserToRucciUser returns the RucciUser representation of User.
+func (m *User) UserToRucciUser() *app.RucciUser {
+	user := &app.RucciUser{}
 	user.Disabled = m.Disabled
 	user.Email = m.Email
-	user.GivenName = &m.GivenName
 	user.ID = m.ID
 	user.Surname = &m.Surname
 
 	return user
 }
 
-// OneAtlasUser returns an array of view: default.
-func (m *UserDB) OneAtlasUser(ctx context.Context, id int) (*app.AtlasUser, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "oneatlasUser"}, time.Now())
+// OneRucciUser returns an array of view: default.
+func (m *UserDB) OneRucciUser(ctx context.Context, id int) (*app.RucciUser, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUser"}, time.Now())
 
 	var native User
-	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		goa.LogError(ctx, "error getting User", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.UserToAtlasUser()
+	view := *native.UserToRucciUser()
 	return &view, err
 }
 
 // MediaType Retrieval Functions
 
-// ListAtlasUserLink returns an array of view: link.
-func (m *UserDB) ListAtlasUserLink(ctx context.Context) []*app.AtlasUserLink {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "listatlasUserlink"}, time.Now())
+// ListRucciUserLink returns an array of view: link.
+func (m *UserDB) ListRucciUserLink(ctx context.Context) []*app.RucciUserLink {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUserlink"}, time.Now())
 
 	var native []*User
-	var objs []*app.AtlasUserLink
+	var objs []*app.RucciUserLink
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -85,44 +84,44 @@ func (m *UserDB) ListAtlasUserLink(ctx context.Context) []*app.AtlasUserLink {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToAtlasUserLink())
+		objs = append(objs, t.UserToRucciUserLink())
 	}
 
 	return objs
 }
 
-// UserToAtlasUserLink returns the AtlasUser representation of User.
-func (m *User) UserToAtlasUserLink() *app.AtlasUserLink {
-	user := &app.AtlasUserLink{}
+// UserToRucciUserLink returns the RucciUser representation of User.
+func (m *User) UserToRucciUserLink() *app.RucciUserLink {
+	user := &app.RucciUserLink{}
 	user.ID = m.ID
 
 	return user
 }
 
-// OneAtlasUserLink returns an array of view: link.
-func (m *UserDB) OneAtlasUserLink(ctx context.Context, id int) (*app.AtlasUserLink, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "oneatlasUserlink"}, time.Now())
+// OneRucciUserLink returns an array of view: link.
+func (m *UserDB) OneRucciUserLink(ctx context.Context, id int) (*app.RucciUserLink, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUserlink"}, time.Now())
 
 	var native User
-	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		goa.LogError(ctx, "error getting User", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.UserToAtlasUserLink()
+	view := *native.UserToRucciUserLink()
 	return &view, err
 }
 
 // MediaType Retrieval Functions
 
-// ListAtlasUserTiny returns an array of view: tiny.
-func (m *UserDB) ListAtlasUserTiny(ctx context.Context) []*app.AtlasUserTiny {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "listatlasUsertiny"}, time.Now())
+// ListRucciUserTiny returns an array of view: tiny.
+func (m *UserDB) ListRucciUserTiny(ctx context.Context) []*app.RucciUserTiny {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUsertiny"}, time.Now())
 
 	var native []*User
-	var objs []*app.AtlasUserTiny
+	var objs []*app.RucciUserTiny
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -131,33 +130,33 @@ func (m *UserDB) ListAtlasUserTiny(ctx context.Context) []*app.AtlasUserTiny {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToAtlasUserTiny())
+		objs = append(objs, t.UserToRucciUserTiny())
 	}
 
 	return objs
 }
 
-// UserToAtlasUserTiny returns the AtlasUser representation of User.
-func (m *User) UserToAtlasUserTiny() *app.AtlasUserTiny {
-	user := &app.AtlasUserTiny{}
+// UserToRucciUserTiny returns the RucciUser representation of User.
+func (m *User) UserToRucciUserTiny() *app.RucciUserTiny {
+	user := &app.RucciUserTiny{}
 	user.Email = m.Email
 	user.ID = m.ID
 
 	return user
 }
 
-// OneAtlasUserTiny returns an array of view: tiny.
-func (m *UserDB) OneAtlasUserTiny(ctx context.Context, id int) (*app.AtlasUserTiny, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "atlasUser", "oneatlasUsertiny"}, time.Now())
+// OneRucciUserTiny returns an array of view: tiny.
+func (m *UserDB) OneRucciUserTiny(ctx context.Context, id int) (*app.RucciUserTiny, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUsertiny"}, time.Now())
 
 	var native User
-	err := m.Db.Scopes().Table(m.TableName()).Where("id = ?", id).Find(&native).Error
+	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
 
 	if err != nil && err != gorm.ErrRecordNotFound {
 		goa.LogError(ctx, "error getting User", "error", err.Error())
 		return nil, err
 	}
 
-	view := *native.UserToAtlasUserTiny()
+	view := *native.UserToRucciUserTiny()
 	return &view, err
 }

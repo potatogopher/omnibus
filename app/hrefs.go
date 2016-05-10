@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Application Resource Href Factories
+// API "rucci.io": Application Resource Href Factories
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
@@ -13,6 +13,11 @@
 package app
 
 import "fmt"
+
+// PostHref returns the resource href.
+func PostHref(postID interface{}) string {
+	return fmt.Sprintf("/posts/%v", postID)
+}
 
 // UserHref returns the resource href.
 func UserHref(userID interface{}) string {

@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Application User Types
+// API "rucci.io": Application User Types
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen

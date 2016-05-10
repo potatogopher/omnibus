@@ -1,5 +1,5 @@
 //************************************************************************//
-// API "Atlas": Application Contexts
+// API "rucci.io": Application Contexts
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
@@ -17,6 +17,226 @@ import (
 	"golang.org/x/net/context"
 	"strconv"
 )
+
+// CreatePostContext provides the post create action context.
+type CreatePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	Payload *CreatePostPayload
+}
+
+// NewCreatePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller create action.
+func NewCreatePostContext(ctx context.Context, service *goa.Service) (*CreatePostContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := CreatePostContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	return &rctx, err
+}
+
+// createPostPayload is the post create action payload.
+type createPostPayload struct {
+	Content *string `json:"content,omitempty" xml:"content,omitempty"`
+	Title   *string `json:"title,omitempty" xml:"title,omitempty"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *createPostPayload) Validate() (err error) {
+	if payload.Title == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+	if payload.Content == nil {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "content"))
+	}
+
+	return err
+}
+
+// Publicize creates CreatePostPayload from createPostPayload
+func (payload *createPostPayload) Publicize() *CreatePostPayload {
+	var pub CreatePostPayload
+	if payload.Content != nil {
+		pub.Content = *payload.Content
+	}
+	if payload.Title != nil {
+		pub.Title = *payload.Title
+	}
+	return &pub
+}
+
+// CreatePostPayload is the post create action payload.
+type CreatePostPayload struct {
+	Content string `json:"content" xml:"content"`
+	Title   string `json:"title" xml:"title"`
+}
+
+// Validate runs the validation rules defined in the design.
+func (payload *CreatePostPayload) Validate() (err error) {
+	if payload.Title == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "title"))
+	}
+	if payload.Content == "" {
+		err = goa.MergeErrors(err, goa.MissingAttributeError(`raw`, "content"))
+	}
+
+	return err
+}
+
+// Created sends a HTTP response with status code 201.
+func (ctx *CreatePostContext) Created() error {
+	ctx.ResponseData.WriteHeader(201)
+	return nil
+}
+
+// DeletePostContext provides the post delete action context.
+type DeletePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	PostID  int
+}
+
+// NewDeletePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller delete action.
+func NewDeletePostContext(ctx context.Context, service *goa.Service) (*DeletePostContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := DeletePostContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	paramPostID := req.Params["postID"]
+	if len(paramPostID) > 0 {
+		rawPostID := paramPostID[0]
+		if postID, err2 := strconv.Atoi(rawPostID); err2 == nil {
+			rctx.PostID = postID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("postID", rawPostID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *DeletePostContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *DeletePostContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// ShowPostContext provides the post show action context.
+type ShowPostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	PostID  int
+}
+
+// NewShowPostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller show action.
+func NewShowPostContext(ctx context.Context, service *goa.Service) (*ShowPostContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := ShowPostContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	paramPostID := req.Params["postID"]
+	if len(paramPostID) > 0 {
+		rawPostID := paramPostID[0]
+		if postID, err2 := strconv.Atoi(rawPostID); err2 == nil {
+			rctx.PostID = postID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("postID", rawPostID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// OK sends a HTTP response with status code 200.
+func (ctx *ShowPostContext) OK(r *RucciUser) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+	return ctx.Service.Send(ctx.Context, 200, r)
+}
+
+// OKTiny sends a HTTP response with status code 200.
+func (ctx *ShowPostContext) OKTiny(r *RucciUserTiny) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+	return ctx.Service.Send(ctx.Context, 200, r)
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *ShowPostContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
+
+// UpdatePostContext provides the post update action context.
+type UpdatePostContext struct {
+	context.Context
+	*goa.ResponseData
+	*goa.RequestData
+	Service *goa.Service
+	PostID  int
+	Payload *UpdatePostPayload
+}
+
+// NewUpdatePostContext parses the incoming request URL and body, performs validations and creates the
+// context used by the post controller update action.
+func NewUpdatePostContext(ctx context.Context, service *goa.Service) (*UpdatePostContext, error) {
+	var err error
+	req := goa.ContextRequest(ctx)
+	rctx := UpdatePostContext{Context: ctx, ResponseData: goa.ContextResponse(ctx), RequestData: req, Service: service}
+	paramPostID := req.Params["postID"]
+	if len(paramPostID) > 0 {
+		rawPostID := paramPostID[0]
+		if postID, err2 := strconv.Atoi(rawPostID); err2 == nil {
+			rctx.PostID = postID
+		} else {
+			err = goa.MergeErrors(err, goa.InvalidParamTypeError("postID", rawPostID, "integer"))
+		}
+	}
+	return &rctx, err
+}
+
+// updatePostPayload is the post update action payload.
+type updatePostPayload struct {
+	Content *string `json:"content,omitempty" xml:"content,omitempty"`
+	Title   *string `json:"title,omitempty" xml:"title,omitempty"`
+}
+
+// Publicize creates UpdatePostPayload from updatePostPayload
+func (payload *updatePostPayload) Publicize() *UpdatePostPayload {
+	var pub UpdatePostPayload
+	if payload.Content != nil {
+		pub.Content = payload.Content
+	}
+	if payload.Title != nil {
+		pub.Title = payload.Title
+	}
+	return &pub
+}
+
+// UpdatePostPayload is the post update action payload.
+type UpdatePostPayload struct {
+	Content *string `json:"content,omitempty" xml:"content,omitempty"`
+	Title   *string `json:"title,omitempty" xml:"title,omitempty"`
+}
+
+// NoContent sends a HTTP response with status code 204.
+func (ctx *UpdatePostContext) NoContent() error {
+	ctx.ResponseData.WriteHeader(204)
+	return nil
+}
+
+// NotFound sends a HTTP response with status code 404.
+func (ctx *UpdatePostContext) NotFound() error {
+	ctx.ResponseData.WriteHeader(404)
+	return nil
+}
 
 // CreateUserContext provides the user create action context.
 type CreateUserContext struct {
@@ -188,14 +408,14 @@ func NewShowUserContext(ctx context.Context, service *goa.Service) (*ShowUserCon
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OK(r *AtlasUser) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/atlas.user")
+func (ctx *ShowUserContext) OK(r *RucciUser) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OKTiny(r *AtlasUserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/atlas.user")
+func (ctx *ShowUserContext) OKTiny(r *RucciUserTiny) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 

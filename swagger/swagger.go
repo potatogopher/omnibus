@@ -1,5 +1,5 @@
 //************************************************************************//
-// Atlas Swagger Spec
+// rucci.io Swagger Spec
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen

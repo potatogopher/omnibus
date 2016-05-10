@@ -12,24 +12,24 @@ import (
 	"testing"
 )
 
-// ShowUserOK test setup
-func ShowUserOK(t *testing.T, ctrl app.UserController, userID int) *app.RucciUser {
-	return ShowUserOKCtx(t, context.Background(), ctrl, userID)
+// ShowPostOK test setup
+func ShowPostOK(t *testing.T, ctrl app.PostController, postID int) *app.RucciUser {
+	return ShowPostOKCtx(t, context.Background(), ctrl, postID)
 }
 
-// ShowUserOKCtx test setup
-func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) *app.RucciUser {
+// ShowPostOKCtx test setup
+func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUser {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
@@ -55,24 +55,24 @@ func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, u
 
 }
 
-// ShowUserOKTiny test setup
-func ShowUserOKTiny(t *testing.T, ctrl app.UserController, userID int) *app.RucciUserTiny {
-	return ShowUserOKTinyCtx(t, context.Background(), ctrl, userID)
+// ShowPostOKTiny test setup
+func ShowPostOKTiny(t *testing.T, ctrl app.PostController, postID int) *app.RucciUserTiny {
+	return ShowPostOKTinyCtx(t, context.Background(), ctrl, postID)
 }
 
-// ShowUserOKTinyCtx test setup
-func ShowUserOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) *app.RucciUserTiny {
+// ShowPostOKTinyCtx test setup
+func ShowPostOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUserTiny {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
@@ -98,24 +98,24 @@ func ShowUserOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.UserControlle
 
 }
 
-// ShowUserOKLink test setup
-func ShowUserOKLink(t *testing.T, ctrl app.UserController, userID int) *app.RucciUserLink {
-	return ShowUserOKLinkCtx(t, context.Background(), ctrl, userID)
+// ShowPostOKLink test setup
+func ShowPostOKLink(t *testing.T, ctrl app.PostController, postID int) *app.RucciUserLink {
+	return ShowPostOKLinkCtx(t, context.Background(), ctrl, postID)
 }
 
-// ShowUserOKLinkCtx test setup
-func ShowUserOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) *app.RucciUserLink {
+// ShowPostOKLinkCtx test setup
+func ShowPostOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUserLink {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
@@ -141,24 +141,24 @@ func ShowUserOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.UserControlle
 
 }
 
-// ShowUserNotFound test setup
-func ShowUserNotFound(t *testing.T, ctrl app.UserController, userID int) {
-	ShowUserNotFoundCtx(t, context.Background(), ctrl, userID)
+// ShowPostNotFound test setup
+func ShowPostNotFound(t *testing.T, ctrl app.PostController, postID int) {
+	ShowPostNotFoundCtx(t, context.Background(), ctrl, postID)
 }
 
-// ShowUserNotFoundCtx test setup
-func ShowUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
+// ShowPostNotFoundCtx test setup
+func ShowPostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
@@ -173,13 +173,13 @@ func ShowUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserControl
 
 }
 
-// CreateUserCreated test setup
-func CreateUserCreated(t *testing.T, ctrl app.UserController, payload *app.CreateUserPayload) {
-	CreateUserCreatedCtx(t, context.Background(), ctrl, payload)
+// CreatePostCreated test setup
+func CreatePostCreated(t *testing.T, ctrl app.PostController, payload *app.CreatePostPayload) {
+	CreatePostCreatedCtx(t, context.Background(), ctrl, payload)
 }
 
-// CreateUserCreatedCtx test setup
-func CreateUserCreatedCtx(t *testing.T, ctx context.Context, ctrl app.UserController, payload *app.CreateUserPayload) {
+// CreatePostCreatedCtx test setup
+func CreatePostCreatedCtx(t *testing.T, ctx context.Context, ctrl app.PostController, payload *app.CreatePostPayload) {
 	err := payload.Validate()
 	if err != nil {
 		panic(err)
@@ -189,12 +189,12 @@ func CreateUserCreatedCtx(t *testing.T, ctx context.Context, ctrl app.UserContro
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("POST", fmt.Sprintf("/users"), nil)
+	req, err := http.NewRequest("POST", fmt.Sprintf("/posts"), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	createCtx, err := app.NewCreateUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	createCtx, err := app.NewCreatePostContext(goaCtx, service)
 	createCtx.Payload = payload
 
 	if err != nil {
@@ -211,28 +211,24 @@ func CreateUserCreatedCtx(t *testing.T, ctx context.Context, ctrl app.UserContro
 
 }
 
-// UpdateUserNoContent test setup
-func UpdateUserNoContent(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	UpdateUserNoContentCtx(t, context.Background(), ctrl, userID, payload)
+// UpdatePostNoContent test setup
+func UpdatePostNoContent(t *testing.T, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
+	UpdatePostNoContentCtx(t, context.Background(), ctrl, postID, payload)
 }
 
-// UpdateUserNoContentCtx test setup
-func UpdateUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	err := payload.Validate()
-	if err != nil {
-		panic(err)
-	}
+// UpdatePostNoContentCtx test setup
+func UpdatePostNoContentCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	updateCtx, err := app.NewUpdatePostContext(goaCtx, service)
 	updateCtx.Payload = payload
 
 	if err != nil {
@@ -249,28 +245,24 @@ func UpdateUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserCont
 
 }
 
-// UpdateUserNotFound test setup
-func UpdateUserNotFound(t *testing.T, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	UpdateUserNotFoundCtx(t, context.Background(), ctrl, userID, payload)
+// UpdatePostNotFound test setup
+func UpdatePostNotFound(t *testing.T, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
+	UpdatePostNotFoundCtx(t, context.Background(), ctrl, postID, payload)
 }
 
-// UpdateUserNotFoundCtx test setup
-func UpdateUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int, payload *app.UpdateUserPayload) {
-	err := payload.Validate()
-	if err != nil {
-		panic(err)
-	}
+// UpdatePostNotFoundCtx test setup
+func UpdatePostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	updateCtx, err := app.NewUpdateUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	updateCtx, err := app.NewUpdatePostContext(goaCtx, service)
 	updateCtx.Payload = payload
 
 	if err != nil {
@@ -287,56 +279,24 @@ func UpdateUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserContr
 
 }
 
-// DeleteUserNotFound test setup
-func DeleteUserNotFound(t *testing.T, ctrl app.UserController, userID int) {
-	DeleteUserNotFoundCtx(t, context.Background(), ctrl, userID)
+// DeletePostNoContent test setup
+func DeletePostNoContent(t *testing.T, ctrl app.PostController, postID int) {
+	DeletePostNoContentCtx(t, context.Background(), ctrl, postID)
 }
 
-// DeleteUserNotFoundCtx test setup
-func DeleteUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
+// DeletePostNoContentCtx test setup
+func DeletePostNoContentCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/posts/%v", postID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Delete(deleteCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 404 {
-		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
-	}
-
-}
-
-// DeleteUserNoContent test setup
-func DeleteUserNoContent(t *testing.T, ctrl app.UserController, userID int) {
-	DeleteUserNoContentCtx(t, context.Background(), ctrl, userID)
-}
-
-// DeleteUserNoContentCtx test setup
-func DeleteUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	deleteCtx, err := app.NewDeletePostContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
@@ -347,6 +307,38 @@ func DeleteUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserCont
 
 	if rw.Code != 204 {
 		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	}
+
+}
+
+// DeletePostNotFound test setup
+func DeletePostNotFound(t *testing.T, ctrl app.PostController, postID int) {
+	DeletePostNotFoundCtx(t, context.Background(), ctrl, postID)
+}
+
+// DeletePostNotFoundCtx test setup
+func DeletePostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/posts/%v", postID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	deleteCtx, err := app.NewDeletePostContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Delete(deleteCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
 	}
 
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/goadesign/goa"
-	"goa-atlas/app"
+	"goa-blog/app"
 )
 
 // PostController implements the post resource.
@@ -30,7 +30,7 @@ func (c *PostController) Delete(ctx *app.DeletePostContext) error {
 // Show runs the show action.
 func (c *PostController) Show(ctx *app.ShowPostContext) error {
 	// TBD: implement
-	res := &app.RucciUser{}
+	res := &app.User{}
 	return ctx.OK(res)
 }
 

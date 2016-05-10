@@ -7,9 +7,9 @@ import (
 	"github.com/goadesign/goa/middleware"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	"goa-atlas/app"
-	"goa-atlas/models"
-	"goa-atlas/swagger"
+	"goa-blog/app"
+	"goa-blog/models"
+	"goa-blog/swagger"
 	"gopkg.in/inconshreveable/log15.v2"
 )
 

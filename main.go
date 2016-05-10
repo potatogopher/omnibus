@@ -28,8 +28,8 @@ func main() {
 	}
 	db.LogMode(true)
 
-	db.DropTable(&models.User{})
-	db.AutoMigrate(&models.User{})
+	db.DropTable(&models.User{}, &models.Post{})
+	db.AutoMigrate(&models.User{}, &models.Post{})
 
 	udb = models.NewUserDB(*db)
 	db.DB().SetMaxOpenConns(50)

@@ -16,6 +16,8 @@ import (
 var db *gorm.DB
 var logger log15.Logger
 var udb *models.UserDB
+var pdb *models.PostDB
+var ErrDatabaseError = goa.NewErrorClass("db_error", 500)
 
 func main() {
 	// Create service
@@ -32,6 +34,7 @@ func main() {
 	db.AutoMigrate(&models.User{}, &models.Post{})
 
 	udb = models.NewUserDB(*db)
+	pdb = models.NewPostDB(*db)
 	db.DB().SetMaxOpenConns(50)
 
 	// Create service
@@ -46,6 +49,9 @@ func main() {
 	// Mount "user" controller
 	c := NewUserController(service)
 	app.MountUserController(service, c)
+	// Mount "post" controller
+	pc := NewPostController(service)
+	app.MountPostController(service, pc)
 	// Mount Swagger spec provider controller
 	swagger.MountController(service)
 

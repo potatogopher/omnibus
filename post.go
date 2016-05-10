@@ -55,6 +55,19 @@ func (c *PostController) Show(ctx *app.ShowPostContext) error {
 
 // Update runs the update action.
 func (c *PostController) Update(ctx *app.UpdatePostContext) error {
-	// TBD: implement
+	post, err := pdb.Get(ctx.Context, ctx.PostID)
+	if err == gorm.ErrRecordNotFound {
+		return ctx.NotFound()
+	} else if err != nil {
+		return ErrDatabaseError(err)
+	}
+
+	post.Title = *ctx.Payload.Title
+	post.Content = *ctx.Payload.Content
+
+	err = pdb.Update(ctx, &post)
+	if err != nil {
+		return ErrDatabaseError(err)
+	}
 	return nil
 }

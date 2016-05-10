@@ -5,7 +5,7 @@ import (
 	. "github.com/goadesign/goa/design/apidsl"
 )
 
-var User = MediaType("application/atlas.user+json", func() {
+var User = MediaType("application/rucci.user+json", func() {
 	Description("A user account")
 	Attributes(func() {
 		Attribute("id", Integer, "ID of user")
@@ -35,6 +35,30 @@ var User = MediaType("application/atlas.user+json", func() {
 		Attribute("id")
 		Attribute("href")
 		Attribute("email")
+	})
+
+	View("link", func() {
+		Attribute("id")
+		Attribute("href")
+	})
+})
+
+var Post = MediaType("application/rucci.post+json", func() {
+	Description("A blog post")
+	Attributes(func() {
+		Attribute("id", Integer, "ID of post")
+		Attribute("href", String, "API href of the post")
+		Attribute("title", String, "Title of the blog post")
+		Attribute("content", String, "Content of the blog post")
+
+		Required("id", "href", "title", "content")
+	})
+
+	View("default", func() {
+		Attribute("id")
+		Attribute("href")
+		Attribute("title")
+		Attribute("content")
 	})
 
 	View("link", func() {

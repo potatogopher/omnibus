@@ -74,7 +74,7 @@ func NewOauthAuthContext(ctx context.Context, service *goa.Service) (*OauthAuthC
 
 // OK sends a HTTP response with status code 200.
 func (ctx *OauthAuthContext) OK(r *Authorize) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize+json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
@@ -336,13 +336,13 @@ func NewShowPostContext(ctx context.Context, service *goa.Service) (*ShowPostCon
 
 // OK sends a HTTP response with status code 200.
 func (ctx *ShowPostContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *ShowPostContext) OKTiny(r *UserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
@@ -585,13 +585,13 @@ func NewShowUserContext(ctx context.Context, service *goa.Service) (*ShowUserCon
 
 // OK sends a HTTP response with status code 200.
 func (ctx *ShowUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
 func (ctx *ShowUserContext) OKTiny(r *UserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user+json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 

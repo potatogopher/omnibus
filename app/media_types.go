@@ -14,30 +14,6 @@ package app
 
 import "github.com/goadesign/goa"
 
-// Authorize media type.
-//
-// Identifier: application/vnd.authorize+json
-type Authorize struct {
-	// access token
-	AccessToken *string `json:"access_token,omitempty" xml:"access_token,omitempty"`
-	// Time to expiration in seconds
-	ExpiresIn *int `json:"expires_in,omitempty" xml:"expires_in,omitempty"`
-	// type of token
-	TokenType *string `json:"token_type,omitempty" xml:"token_type,omitempty"`
-}
-
-// Login media type.
-//
-// Identifier: application/vnd.login+json
-type Login struct {
-	// UUID of requesting application
-	Application *string `json:"application,omitempty" xml:"application,omitempty"`
-	// email
-	Email *string `json:"email,omitempty" xml:"email,omitempty"`
-	// password
-	Password *string `json:"password,omitempty" xml:"password,omitempty"`
-}
-
 // Post media type.
 //
 // Identifier: application/vnd.post+json

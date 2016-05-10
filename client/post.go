@@ -12,8 +12,10 @@ import (
 
 // CreatePostPayload is the post create action payload.
 type CreatePostPayload struct {
+	// Content of the blog post
 	Content string `json:"content" xml:"content"`
-	Title   string `json:"title" xml:"title"`
+	// Title of the blog post
+	Title string `json:"title" xml:"title"`
 }
 
 // CreatePostPath computes a request path to the create action of post.
@@ -89,8 +91,10 @@ func (c *Client) ShowPost(ctx context.Context, path string) (*http.Response, err
 
 // UpdatePostPayload is the post update action payload.
 type UpdatePostPayload struct {
+	// Content of the blog post
 	Content *string `json:"content,omitempty" xml:"content,omitempty"`
-	Title   *string `json:"title,omitempty" xml:"title,omitempty"`
+	// Title of the blog post
+	Title *string `json:"title,omitempty" xml:"title,omitempty"`
 }
 
 // UpdatePostPath computes a request path to the update action of post.

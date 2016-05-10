@@ -5,33 +5,13 @@ consumes:
 - application/gob
 - application/x-gob
 definitions:
-  Authorize:
-    description: Token authorization response
-    example:
-      access_token: Et consectetur non qui reiciendis voluptatem.
-      expires_in: 6.0189097e+18
-      token_type: Quam consequatur et ut magnam velit.
-    properties:
-      access_token:
-        description: access token
-        example: Et quis.
-        type: string
-      expires_in:
-        description: Time to expiration in seconds
-        example: 3.464305e+18
-        format: int64
-        type: integer
-      token_type:
-        description: type of token
-        example: Et magnam blanditiis repellat quia quo iure.
-        type: string
-    title: 'Mediatype identifier: application/vnd.authorize+json'
-    type: object
   CreatePostPayload:
     properties:
       content:
+        description: Content of the blog post
         type: string
       title:
+        description: Title of the blog post
         type: string
     required:
     - title
@@ -59,37 +39,45 @@ definitions:
     - password
     title: CreateUserPayload
     type: object
-  RefreshAuthPayload:
+  Post:
+    description: A blog post
+    example:
+      content: Dolorem quam consequatur et ut.
+      href: Velit quis libero ea quia repellat quam.
+      id: 6.2523646e+18
+      title: Qui dolor.
     properties:
-      application:
-        description: UUID of requesting application
+      content:
+        description: Content of the blog post
+        example: Et quis.
         type: string
-      email:
-        description: email
+      href:
+        description: API href of the post
+        example: Non et magnam blanditiis repellat quia quo.
         type: string
-      password:
-        description: password
+      id:
+        description: ID of post
+        example: 4.1688338e+18
+        format: int64
+        type: integer
+      title:
+        description: Title of the blog post
+        example: Et consectetur non qui reiciendis voluptatem.
         type: string
-    title: RefreshAuthPayload
-    type: object
-  TokenAuthPayload:
-    properties:
-      application:
-        description: UUID of requesting application
-        type: string
-      email:
-        description: email
-        type: string
-      password:
-        description: password
-        type: string
-    title: TokenAuthPayload
+    required:
+    - id
+    - href
+    - title
+    - content
+    title: 'Mediatype identifier: application/vnd.post+json'
     type: object
   UpdatePostPayload:
     properties:
       content:
+        description: Content of the blog post
         type: string
       title:
+        description: Title of the blog post
         type: string
     title: UpdatePostPayload
     type: object
@@ -116,14 +104,14 @@ definitions:
   User:
     description: A user account
     example:
-      disabled: false
-      email: Voluptates ducimus.
-      given_name: Tempora quis ducimus consequatur excepturi vel et.
-      href: Est voluptas aliquid dolorem.
-      id: 1.1933749e+18
-      passwordHash: Occaecati molestias facere molestiae quia.
-      passwordSalt: Sed excepturi ducimus aut tempore deleniti.
-      surname: Minima enim inventore molestias quia iusto.
+      disabled: true
+      email: Odit optio hic.
+      given_name: Quos harum dolores eos nobis fugit.
+      href: Necessitatibus veritatis.
+      id: 8.6423983e+18
+      passwordHash: Et harum.
+      passwordSalt: Magnam illum exercitationem sed doloremque sint ipsam.
+      surname: Rerum voluptas.
     properties:
       disabled:
         description: Flag for if the user is disabled or not
@@ -131,33 +119,33 @@ definitions:
         type: boolean
       email:
         description: Email of user
-        example: theron_maggio@ohararuecker.org
+        example: zola@morissette.biz
         format: email
         type: string
       given_name:
         description: Given name of user
-        example: Doloremque sint ipsam aut rerum voluptas.
+        example: Nobis ut fuga nihil consectetur corporis.
         type: string
       href:
         description: API href of the user
-        example: Ab amet occaecati ut voluptates.
+        example: Placeat reiciendis sed.
         type: string
       id:
         description: ID of user
-        example: 1.3749972e+18
+        example: 1.0114296e+17
         format: int64
         type: integer
       passwordHash:
         description: Hashed password of user
-        example: Optio accusantium qui.
+        example: Cumque molestiae nulla fuga.
         type: string
       passwordSalt:
         description: Salted password of user
-        example: Voluptatem odit nemo commodi asperiores non.
+        example: Nulla porro et.
         type: string
       surname:
         description: Surname of user
-        example: Repellendus rem possimus soluta voluptatem odit sint.
+        example: Dolor fugiat impedit nesciunt occaecati.
         type: string
     required:
     - id
@@ -181,70 +169,6 @@ info:
   title: rucci.io
   version: ""
 paths:
-  auth/{provider}:
-    get:
-      description: OAUTH2 login endpoint
-      operationId: auth#oauth
-      parameters:
-      - in: path
-        name: provider
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/Authorize'
-      schemes:
-      - http
-  auth/{provider}/callback:
-    get:
-      description: OAUTH2 callback endpoint
-      operationId: auth#callback
-      parameters:
-      - in: path
-        name: provider
-        required: true
-        type: string
-      responses:
-        "200":
-          description: OK
-      schemes:
-      - http
-  auth/refresh:
-    post:
-      description: Obtain a refreshed access token
-      operationId: auth#refresh
-      parameters:
-      - in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/RefreshAuthPayload'
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/Authorize'
-      schemes:
-      - http
-  auth/token:
-    post:
-      description: Obtain an access token
-      operationId: auth#token
-      parameters:
-      - in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/TokenAuthPayload'
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/Authorize'
-      schemes:
-      - http
   posts:
     post:
       description: Create new post
@@ -294,7 +218,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/Post'
         "404":
           description: Not Found
       schemes:
@@ -408,7 +332,7 @@ responses:
   OK:
     description: OK
     schema:
-      $ref: '#/definitions/Authorize'
+      $ref: '#/definitions/Post'
 schemes:
 - http
 swagger: "2.0"

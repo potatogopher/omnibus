@@ -20,9 +20,6 @@ var (
 
 	// PasswordHashBytes is the number of bytes a hash will be
 	PasswordHashBytes = 64
-
-	// ErrDatabaseError is the error returned when a db query fails.
-	ErrDatabaseError = goa.NewErrorClass("db_error", 500)
 )
 
 // UserController implements the user resource.

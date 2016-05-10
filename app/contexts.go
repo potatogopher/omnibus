@@ -157,14 +157,14 @@ func NewShowPostContext(ctx context.Context, service *goa.Service) (*ShowPostCon
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowPostContext) OK(r *RucciUser) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+func (ctx *ShowPostContext) OK(r *User) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
-func (ctx *ShowPostContext) OKTiny(r *RucciUserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+func (ctx *ShowPostContext) OKTiny(r *UserTiny) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
@@ -408,14 +408,14 @@ func NewShowUserContext(ctx context.Context, service *goa.Service) (*ShowUserCon
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OK(r *RucciUser) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+func (ctx *ShowUserContext) OK(r *User) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 
 // OKTiny sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OKTiny(r *RucciUserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/rucci.user")
+func (ctx *ShowUserContext) OKTiny(r *UserTiny) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user.json")
 	return ctx.Service.Send(ctx.Context, 200, r)
 }
 

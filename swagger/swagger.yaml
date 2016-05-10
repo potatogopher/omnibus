@@ -38,7 +38,36 @@ definitions:
     - password
     title: CreateUserPayload
     type: object
-  RucciUser:
+  UpdatePostPayload:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    title: UpdatePostPayload
+    type: object
+  UpdateUserPayload:
+    properties:
+      disabled:
+        description: Flag for if the user is disabled or not
+        type: boolean
+      email:
+        description: Email of user
+        format: email
+        type: string
+      givenName:
+        description: Given name of user
+        type: string
+      newPassword:
+        type: string
+      oldPassword:
+        type: string
+      surname:
+        description: Surname of user
+        type: string
+    title: UpdateUserPayload
+    type: object
+  User:
     description: A user account
     example:
       disabled: true
@@ -91,36 +120,7 @@ definitions:
     - passwordSalt
     - passwordHash
     - disabled
-    title: 'Mediatype identifier: application/rucci.user+json'
-    type: object
-  UpdatePostPayload:
-    properties:
-      content:
-        type: string
-      title:
-        type: string
-    title: UpdatePostPayload
-    type: object
-  UpdateUserPayload:
-    properties:
-      disabled:
-        description: Flag for if the user is disabled or not
-        type: boolean
-      email:
-        description: Email of user
-        format: email
-        type: string
-      givenName:
-        description: Given name of user
-        type: string
-      newPassword:
-        type: string
-      oldPassword:
-        type: string
-      surname:
-        description: Surname of user
-        type: string
-    title: UpdateUserPayload
+    title: 'Mediatype identifier: application/vnd.user+json'
     type: object
 host: localhost
 info:
@@ -184,7 +184,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/RucciUser'
+            $ref: '#/definitions/User'
         "404":
           description: Not Found
       schemes:
@@ -259,7 +259,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/RucciUser'
+            $ref: '#/definitions/User'
         "404":
           description: Not Found
       schemes:
@@ -298,7 +298,7 @@ responses:
   OK:
     description: OK
     schema:
-      $ref: '#/definitions/RucciUser'
+      $ref: '#/definitions/User'
 schemes:
 - http
 swagger: "2.0"

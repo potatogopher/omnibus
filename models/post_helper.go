@@ -14,19 +14,19 @@ package models
 import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
-	"goa-atlas/app"
+	"goa-blog/app"
 	"golang.org/x/net/context"
 	"time"
 )
 
 // MediaType Retrieval Functions
 
-// ListRucciPost returns an array of view: default.
-func (m *PostDB) ListRucciPost(ctx context.Context, userID int) []*app.RucciPost {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciPost", "listrucciPost"}, time.Now())
+// ListPost returns an array of view: default.
+func (m *PostDB) ListPost(ctx context.Context, userID int) []*app.Post {
+	defer goa.MeasureSince([]string{"goa", "db", "post", "listpost"}, time.Now())
 
 	var native []*Post
-	var objs []*app.RucciPost
+	var objs []*app.Post
 	err := m.Db.Scopes(PostFilterByUser(userID, &m.Db)).Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -35,15 +35,15 @@ func (m *PostDB) ListRucciPost(ctx context.Context, userID int) []*app.RucciPost
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.PostToRucciPost())
+		objs = append(objs, t.PostToPost())
 	}
 
 	return objs
 }
 
-// PostToRucciPost returns the RucciPost representation of Post.
-func (m *Post) PostToRucciPost() *app.RucciPost {
-	post := &app.RucciPost{}
+// PostToPost returns the Post representation of Post.
+func (m *Post) PostToPost() *app.Post {
+	post := &app.Post{}
 	post.Content = m.Content
 	post.ID = m.ID
 	post.Title = m.Title
@@ -51,9 +51,9 @@ func (m *Post) PostToRucciPost() *app.RucciPost {
 	return post
 }
 
-// OneRucciPost returns an array of view: default.
-func (m *PostDB) OneRucciPost(ctx context.Context, id int, userID int) (*app.RucciPost, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciPost", "onerucciPost"}, time.Now())
+// OnePost returns an array of view: default.
+func (m *PostDB) OnePost(ctx context.Context, id int, userID int) (*app.Post, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "post", "onepost"}, time.Now())
 
 	var native Post
 	err := m.Db.Scopes(PostFilterByUser(userID, &m.Db)).Table(m.TableName()).Preload("User").Where("id = ?", id).Find(&native).Error
@@ -63,18 +63,18 @@ func (m *PostDB) OneRucciPost(ctx context.Context, id int, userID int) (*app.Ruc
 		return nil, err
 	}
 
-	view := *native.PostToRucciPost()
+	view := *native.PostToPost()
 	return &view, err
 }
 
 // MediaType Retrieval Functions
 
-// ListRucciPostLink returns an array of view: link.
-func (m *PostDB) ListRucciPostLink(ctx context.Context, userID int) []*app.RucciPostLink {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciPost", "listrucciPostlink"}, time.Now())
+// ListPostLink returns an array of view: link.
+func (m *PostDB) ListPostLink(ctx context.Context, userID int) []*app.PostLink {
+	defer goa.MeasureSince([]string{"goa", "db", "post", "listpostlink"}, time.Now())
 
 	var native []*Post
-	var objs []*app.RucciPostLink
+	var objs []*app.PostLink
 	err := m.Db.Scopes(PostFilterByUser(userID, &m.Db)).Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -83,23 +83,23 @@ func (m *PostDB) ListRucciPostLink(ctx context.Context, userID int) []*app.Rucci
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.PostToRucciPostLink())
+		objs = append(objs, t.PostToPostLink())
 	}
 
 	return objs
 }
 
-// PostToRucciPostLink returns the RucciPost representation of Post.
-func (m *Post) PostToRucciPostLink() *app.RucciPostLink {
-	post := &app.RucciPostLink{}
+// PostToPostLink returns the Post representation of Post.
+func (m *Post) PostToPostLink() *app.PostLink {
+	post := &app.PostLink{}
 	post.ID = m.ID
 
 	return post
 }
 
-// OneRucciPostLink returns an array of view: link.
-func (m *PostDB) OneRucciPostLink(ctx context.Context, id int, userID int) (*app.RucciPostLink, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciPost", "onerucciPostlink"}, time.Now())
+// OnePostLink returns an array of view: link.
+func (m *PostDB) OnePostLink(ctx context.Context, id int, userID int) (*app.PostLink, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "post", "onepostlink"}, time.Now())
 
 	var native Post
 	err := m.Db.Scopes(PostFilterByUser(userID, &m.Db)).Table(m.TableName()).Preload("User").Where("id = ?", id).Find(&native).Error
@@ -109,6 +109,6 @@ func (m *PostDB) OneRucciPostLink(ctx context.Context, id int, userID int) (*app
 		return nil, err
 	}
 
-	view := *native.PostToRucciPostLink()
+	view := *native.PostToPostLink()
 	return &view, err
 }

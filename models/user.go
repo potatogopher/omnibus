@@ -14,7 +14,7 @@ package models
 import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
-	"goa-atlas/app"
+	"goa-blog/app"
 	"golang.org/x/net/context"
 	"time"
 )
@@ -66,14 +66,14 @@ type UserStorage interface {
 	Update(ctx context.Context, user *User) error
 	Delete(ctx context.Context, id int) error
 
-	ListRucciUser(ctx context.Context) []*app.RucciUser
-	OneRucciUser(ctx context.Context, id int) (*app.RucciUser, error)
+	ListUser(ctx context.Context) []*app.User
+	OneUser(ctx context.Context, id int) (*app.User, error)
 
-	ListRucciUserLink(ctx context.Context) []*app.RucciUserLink
-	OneRucciUserLink(ctx context.Context, id int) (*app.RucciUserLink, error)
+	ListUserLink(ctx context.Context) []*app.UserLink
+	OneUserLink(ctx context.Context, id int) (*app.UserLink, error)
 
-	ListRucciUserTiny(ctx context.Context) []*app.RucciUserTiny
-	OneRucciUserTiny(ctx context.Context, id int) (*app.RucciUserTiny, error)
+	ListUserTiny(ctx context.Context) []*app.UserTiny
+	OneUserTiny(ctx context.Context, id int) (*app.UserTiny, error)
 }
 
 // TableName overrides the table name settings in Gorm to force a specific table name

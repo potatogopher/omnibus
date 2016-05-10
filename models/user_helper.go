@@ -14,19 +14,19 @@ package models
 import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
-	"goa-atlas/app"
+	"goa-blog/app"
 	"golang.org/x/net/context"
 	"time"
 )
 
 // MediaType Retrieval Functions
 
-// ListRucciUser returns an array of view: default.
-func (m *UserDB) ListRucciUser(ctx context.Context) []*app.RucciUser {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUser"}, time.Now())
+// ListUser returns an array of view: default.
+func (m *UserDB) ListUser(ctx context.Context) []*app.User {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "listuser"}, time.Now())
 
 	var native []*User
-	var objs []*app.RucciUser
+	var objs []*app.User
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -35,15 +35,15 @@ func (m *UserDB) ListRucciUser(ctx context.Context) []*app.RucciUser {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToRucciUser())
+		objs = append(objs, t.UserToUser())
 	}
 
 	return objs
 }
 
-// UserToRucciUser returns the RucciUser representation of User.
-func (m *User) UserToRucciUser() *app.RucciUser {
-	user := &app.RucciUser{}
+// UserToUser returns the User representation of User.
+func (m *User) UserToUser() *app.User {
+	user := &app.User{}
 	user.Disabled = m.Disabled
 	user.Email = m.Email
 	user.ID = m.ID
@@ -52,9 +52,9 @@ func (m *User) UserToRucciUser() *app.RucciUser {
 	return user
 }
 
-// OneRucciUser returns an array of view: default.
-func (m *UserDB) OneRucciUser(ctx context.Context, id int) (*app.RucciUser, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUser"}, time.Now())
+// OneUser returns an array of view: default.
+func (m *UserDB) OneUser(ctx context.Context, id int) (*app.User, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "oneuser"}, time.Now())
 
 	var native User
 	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
@@ -64,18 +64,18 @@ func (m *UserDB) OneRucciUser(ctx context.Context, id int) (*app.RucciUser, erro
 		return nil, err
 	}
 
-	view := *native.UserToRucciUser()
+	view := *native.UserToUser()
 	return &view, err
 }
 
 // MediaType Retrieval Functions
 
-// ListRucciUserLink returns an array of view: link.
-func (m *UserDB) ListRucciUserLink(ctx context.Context) []*app.RucciUserLink {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUserlink"}, time.Now())
+// ListUserLink returns an array of view: link.
+func (m *UserDB) ListUserLink(ctx context.Context) []*app.UserLink {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "listuserlink"}, time.Now())
 
 	var native []*User
-	var objs []*app.RucciUserLink
+	var objs []*app.UserLink
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -84,23 +84,23 @@ func (m *UserDB) ListRucciUserLink(ctx context.Context) []*app.RucciUserLink {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToRucciUserLink())
+		objs = append(objs, t.UserToUserLink())
 	}
 
 	return objs
 }
 
-// UserToRucciUserLink returns the RucciUser representation of User.
-func (m *User) UserToRucciUserLink() *app.RucciUserLink {
-	user := &app.RucciUserLink{}
+// UserToUserLink returns the User representation of User.
+func (m *User) UserToUserLink() *app.UserLink {
+	user := &app.UserLink{}
 	user.ID = m.ID
 
 	return user
 }
 
-// OneRucciUserLink returns an array of view: link.
-func (m *UserDB) OneRucciUserLink(ctx context.Context, id int) (*app.RucciUserLink, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUserlink"}, time.Now())
+// OneUserLink returns an array of view: link.
+func (m *UserDB) OneUserLink(ctx context.Context, id int) (*app.UserLink, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "oneuserlink"}, time.Now())
 
 	var native User
 	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
@@ -110,18 +110,18 @@ func (m *UserDB) OneRucciUserLink(ctx context.Context, id int) (*app.RucciUserLi
 		return nil, err
 	}
 
-	view := *native.UserToRucciUserLink()
+	view := *native.UserToUserLink()
 	return &view, err
 }
 
 // MediaType Retrieval Functions
 
-// ListRucciUserTiny returns an array of view: tiny.
-func (m *UserDB) ListRucciUserTiny(ctx context.Context) []*app.RucciUserTiny {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "listrucciUsertiny"}, time.Now())
+// ListUserTiny returns an array of view: tiny.
+func (m *UserDB) ListUserTiny(ctx context.Context) []*app.UserTiny {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "listusertiny"}, time.Now())
 
 	var native []*User
-	var objs []*app.RucciUserTiny
+	var objs []*app.UserTiny
 	err := m.Db.Scopes().Table(m.TableName()).Find(&native).Error
 
 	if err != nil {
@@ -130,24 +130,24 @@ func (m *UserDB) ListRucciUserTiny(ctx context.Context) []*app.RucciUserTiny {
 	}
 
 	for _, t := range native {
-		objs = append(objs, t.UserToRucciUserTiny())
+		objs = append(objs, t.UserToUserTiny())
 	}
 
 	return objs
 }
 
-// UserToRucciUserTiny returns the RucciUser representation of User.
-func (m *User) UserToRucciUserTiny() *app.RucciUserTiny {
-	user := &app.RucciUserTiny{}
+// UserToUserTiny returns the User representation of User.
+func (m *User) UserToUserTiny() *app.UserTiny {
+	user := &app.UserTiny{}
 	user.Email = m.Email
 	user.ID = m.ID
 
 	return user
 }
 
-// OneRucciUserTiny returns an array of view: tiny.
-func (m *UserDB) OneRucciUserTiny(ctx context.Context, id int) (*app.RucciUserTiny, error) {
-	defer goa.MeasureSince([]string{"goa", "db", "rucciUser", "onerucciUsertiny"}, time.Now())
+// OneUserTiny returns an array of view: tiny.
+func (m *UserDB) OneUserTiny(ctx context.Context, id int) (*app.UserTiny, error) {
+	defer goa.MeasureSince([]string{"goa", "db", "user", "oneusertiny"}, time.Now())
 
 	var native User
 	err := m.Db.Scopes().Table(m.TableName()).Preload("Posts").Where("id = ?", id).Find(&native).Error
@@ -157,6 +157,6 @@ func (m *UserDB) OneRucciUserTiny(ctx context.Context, id int) (*app.RucciUserTi
 		return nil, err
 	}
 
-	view := *native.UserToRucciUserTiny()
+	view := *native.UserToUserTiny()
 	return &view, err
 }

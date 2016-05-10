@@ -14,7 +14,7 @@ package models
 import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
-	"goa-atlas/app"
+	"goa-blog/app"
 	"golang.org/x/net/context"
 	"time"
 )
@@ -63,11 +63,11 @@ type PostStorage interface {
 	Update(ctx context.Context, post *Post) error
 	Delete(ctx context.Context, id int) error
 
-	ListRucciPost(ctx context.Context, userID int) []*app.RucciPost
-	OneRucciPost(ctx context.Context, id int, userID int) (*app.RucciPost, error)
+	ListPost(ctx context.Context, userID int) []*app.Post
+	OnePost(ctx context.Context, id int, userID int) (*app.Post, error)
 
-	ListRucciPostLink(ctx context.Context, userID int) []*app.RucciPostLink
-	OneRucciPostLink(ctx context.Context, id int, userID int) (*app.RucciPostLink, error)
+	ListPostLink(ctx context.Context, userID int) []*app.PostLink
+	OnePostLink(ctx context.Context, id int, userID int) (*app.PostLink, error)
 
 	UpdateFromCreatePostPayload(ctx context.Context, payload *app.CreatePostPayload, id int) error
 

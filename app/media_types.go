@@ -14,10 +14,10 @@ package app
 
 import "github.com/goadesign/goa"
 
-// RucciPost media type.
+// Post media type.
 //
-// Identifier: application/rucci.post+json
-type RucciPost struct {
+// Identifier: application/vnd.post+json
+type Post struct {
 	// Content of the blog post
 	Content string `json:"content" xml:"content"`
 	// API href of the post
@@ -28,8 +28,8 @@ type RucciPost struct {
 	Title string `json:"title" xml:"title"`
 }
 
-// Validate validates the RucciPost media type instance.
-func (mt *RucciPost) Validate() (err error) {
+// Validate validates the Post media type instance.
+func (mt *Post) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -43,18 +43,18 @@ func (mt *RucciPost) Validate() (err error) {
 	return err
 }
 
-// RucciPostLink media type.
+// PostLink media type.
 //
-// Identifier: application/rucci.post+json
-type RucciPostLink struct {
+// Identifier: application/vnd.post+json
+type PostLink struct {
 	// API href of the post
 	Href string `json:"href" xml:"href"`
 	// ID of post
 	ID int `json:"id" xml:"id"`
 }
 
-// Validate validates the RucciPostLink media type instance.
-func (mt *RucciPostLink) Validate() (err error) {
+// Validate validates the PostLink media type instance.
+func (mt *PostLink) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -62,10 +62,10 @@ func (mt *RucciPostLink) Validate() (err error) {
 	return err
 }
 
-// RucciUser media type.
+// User media type.
 //
-// Identifier: application/rucci.user+json
-type RucciUser struct {
+// Identifier: application/vnd.user+json
+type User struct {
 	// Flag for if the user is disabled or not
 	Disabled bool `json:"disabled" xml:"disabled"`
 	// Email of user
@@ -80,8 +80,8 @@ type RucciUser struct {
 	Surname *string `json:"surname,omitempty" xml:"surname,omitempty"`
 }
 
-// Validate validates the RucciUser media type instance.
-func (mt *RucciUser) Validate() (err error) {
+// Validate validates the User media type instance.
+func (mt *User) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -95,18 +95,18 @@ func (mt *RucciUser) Validate() (err error) {
 	return err
 }
 
-// RucciUserLink media type.
+// UserLink media type.
 //
-// Identifier: application/rucci.user+json
-type RucciUserLink struct {
+// Identifier: application/vnd.user+json
+type UserLink struct {
 	// API href of the user
 	Href string `json:"href" xml:"href"`
 	// ID of user
 	ID int `json:"id" xml:"id"`
 }
 
-// Validate validates the RucciUserLink media type instance.
-func (mt *RucciUserLink) Validate() (err error) {
+// Validate validates the UserLink media type instance.
+func (mt *UserLink) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}
@@ -114,10 +114,10 @@ func (mt *RucciUserLink) Validate() (err error) {
 	return err
 }
 
-// RucciUserTiny media type.
+// UserTiny media type.
 //
-// Identifier: application/rucci.user+json
-type RucciUserTiny struct {
+// Identifier: application/vnd.user+json
+type UserTiny struct {
 	// Email of user
 	Email string `json:"email" xml:"email"`
 	// API href of the user
@@ -126,8 +126,8 @@ type RucciUserTiny struct {
 	ID int `json:"id" xml:"id"`
 }
 
-// Validate validates the RucciUserTiny media type instance.
-func (mt *RucciUserTiny) Validate() (err error) {
+// Validate validates the UserTiny media type instance.
+func (mt *UserTiny) Validate() (err error) {
 	if mt.Href == "" {
 		err = goa.MergeErrors(err, goa.MissingAttributeError(`response`, "href"))
 	}

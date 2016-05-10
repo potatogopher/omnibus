@@ -13,12 +13,12 @@ import (
 )
 
 // ShowPostOK test setup
-func ShowPostOK(t *testing.T, ctrl app.PostController, postID int) *app.RucciUser {
+func ShowPostOK(t *testing.T, ctrl app.PostController, postID int) *app.User {
 	return ShowPostOKCtx(t, context.Background(), ctrl, postID)
 }
 
 // ShowPostOKCtx test setup
-func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUser {
+func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.User {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
@@ -38,9 +38,9 @@ func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, p
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
 
-	a, ok := resp.(*app.RucciUser)
+	a, ok := resp.(*app.User)
 	if !ok {
-		t.Errorf("invalid response media: got %+v, expected instance of app.RucciUser", resp)
+		t.Errorf("invalid response media: got %+v, expected instance of app.User", resp)
 	}
 
 	if rw.Code != 200 {
@@ -56,12 +56,12 @@ func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, p
 }
 
 // ShowPostOKTiny test setup
-func ShowPostOKTiny(t *testing.T, ctrl app.PostController, postID int) *app.RucciUserTiny {
+func ShowPostOKTiny(t *testing.T, ctrl app.PostController, postID int) *app.UserTiny {
 	return ShowPostOKTinyCtx(t, context.Background(), ctrl, postID)
 }
 
 // ShowPostOKTinyCtx test setup
-func ShowPostOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUserTiny {
+func ShowPostOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.UserTiny {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
@@ -81,9 +81,9 @@ func ShowPostOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.PostControlle
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
 
-	a, ok := resp.(*app.RucciUserTiny)
+	a, ok := resp.(*app.UserTiny)
 	if !ok {
-		t.Errorf("invalid response media: got %+v, expected instance of app.RucciUserTiny", resp)
+		t.Errorf("invalid response media: got %+v, expected instance of app.UserTiny", resp)
 	}
 
 	if rw.Code != 200 {
@@ -99,12 +99,12 @@ func ShowPostOKTinyCtx(t *testing.T, ctx context.Context, ctrl app.PostControlle
 }
 
 // ShowPostOKLink test setup
-func ShowPostOKLink(t *testing.T, ctrl app.PostController, postID int) *app.RucciUserLink {
+func ShowPostOKLink(t *testing.T, ctrl app.PostController, postID int) *app.UserLink {
 	return ShowPostOKLinkCtx(t, context.Background(), ctrl, postID)
 }
 
 // ShowPostOKLinkCtx test setup
-func ShowPostOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.RucciUserLink {
+func ShowPostOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) *app.UserLink {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
@@ -124,9 +124,9 @@ func ShowPostOKLinkCtx(t *testing.T, ctx context.Context, ctrl app.PostControlle
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
 
-	a, ok := resp.(*app.RucciUserLink)
+	a, ok := resp.(*app.UserLink)
 	if !ok {
-		t.Errorf("invalid response media: got %+v, expected instance of app.RucciUserLink", resp)
+		t.Errorf("invalid response media: got %+v, expected instance of app.UserLink", resp)
 	}
 
 	if rw.Code != 200 {

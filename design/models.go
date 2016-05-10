@@ -21,6 +21,22 @@ var _ = StorageGroup("Atlas", func() {
 			Field("passwordHash", gorma.String)
 			Field("passwordSalt", gorma.String)
 			Field("disabled", gorma.Boolean)
+			HasMany("Posts", "Post")
+		})
+
+		Model("Post", func() {
+			BuildsFrom(func() {
+				Payload("post", "create")
+				Payload("post", "update")
+			})
+			RendersTo(Post)
+			Description("Blog Post")
+			Field("id", gorma.Integer, func() {
+				PrimaryKey()
+			})
+			Field("title", gorma.String)
+			Field("content", gorma.String)
+			BelongsTo("User")
 		})
 	})
 })

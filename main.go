@@ -13,6 +13,7 @@ import (
 
 	"goa-blog/app"
 	"goa-blog/models"
+	"goa-blog/resources/config"
 	"goa-blog/swagger"
 
 	"gopkg.in/inconshreveable/log15.v2"
@@ -53,7 +54,7 @@ func main() {
 	service.Use(middleware.Recover())
 
 	// Configure JWT Security
-	publicKey, err := token.ParseRSAPublicKeyFromPEM([]byte(RSAPublicKey))
+	publicKey, err := token.ParseRSAPublicKeyFromPEM([]byte(config.RSAPublicKey))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -44,6 +44,22 @@ var User = MediaType("application/vnd.user+json", func() {
 	})
 })
 
+// Authorize is the authorize resource media type
+var Authorize = MediaType("application/vnd.authorize+json", func() {
+	Description("Token authorization response")
+	Attributes(func() {
+		Attribute("access_token", String, "access token", func() {})
+		Attribute("expires_in", String, "Time to expiration in seconds", func() {})
+		Attribute("token_type", String, "type of token", func() {})
+	})
+
+	View("default", func() {
+		Attribute("access_token")
+		Attribute("expires_in")
+		Attribute("token_type")
+	})
+})
+
 // Post is the post resource media type
 var Post = MediaType("application/vnd.post+json", func() {
 	Description("A blog post")

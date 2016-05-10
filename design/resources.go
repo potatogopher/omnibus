@@ -71,6 +71,26 @@ var _ = Resource("user", func() {
 	})
 })
 
+var _ = Resource("auth", func() {
+	DefaultMedia(Authorize)
+	BasePath("/auth")
+	Action("token", func() {
+		Routing(
+			POST("/token"),
+		)
+		Description("Obtain an access token")
+		Payload(func() {
+			Member("email")
+			Member("password")
+			Required("email")
+			Required("password")
+		})
+		Response(Created, func() {
+			Media(Authorize)
+		})
+	})
+})
+
 var _ = Resource("post", func() {
 
 	DefaultMedia(Post)

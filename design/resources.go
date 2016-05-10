@@ -70,3 +70,62 @@ var _ = Resource("user", func() {
 		Response(NotFound)
 	})
 })
+
+var _ = Resource("post", func() {
+
+	DefaultMedia(User)
+	BasePath("/posts")
+
+	Action("show", func() {
+		Routing(
+			GET("/:postID"),
+		)
+		Description("Retrieve post with given id. IDs 1 and 2 pre-exist in the system.")
+		Params(func() {
+			Param("postID", Integer, "Post ID")
+		})
+		Response(OK)
+		Response(NotFound)
+	})
+
+	Action("create", func() {
+		Routing(
+			POST(""),
+		)
+		Description("Create new post")
+		Payload(func() {
+			Member("title")
+			Member("content")
+			Required("title")
+			Required("content")
+		})
+		Response(Created, "/posts/[0-9]+")
+	})
+
+	Action("update", func() {
+		Routing(
+			PUT("/:postID"),
+		)
+		Description("Change post attributes")
+		Params(func() {
+			Param("postID", Integer, "Post ID")
+		})
+		Payload(func() {
+			Member("title")
+			Member("content")
+		})
+		Response(NoContent)
+		Response(NotFound)
+	})
+
+	Action("delete", func() {
+		Routing(
+			DELETE("/:postID"),
+		)
+		Params(func() {
+			Param("postID", Integer, "Post ID")
+		})
+		Response(NoContent)
+		Response(NotFound)
+	})
+})

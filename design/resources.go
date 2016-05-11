@@ -18,7 +18,10 @@ var _ = Resource("user", func() {
 		Params(func() {
 			Param("userID", Integer, "User ID")
 		})
-		Response(OK)
+		Response(OK, func() {
+			Status(200)
+			Media("application/json")
+		})
 		Response(NotFound)
 	})
 
@@ -85,7 +88,10 @@ var _ = Resource("auth", func() {
 			Required("email")
 			Required("password")
 		})
-		Response(OK)
+		Response(OK, func() {
+			Status(200)
+			Media("application/json")
+		})
 	})
 })
 
@@ -103,7 +109,10 @@ var _ = Resource("post", func() {
 		Params(func() {
 			Param("postID", Integer, "Post ID")
 		})
-		Response(OK)
+		Response(OK, func() {
+			Status(200)
+			Media("application/json")
+		})
 		Response(NotFound)
 	})
 

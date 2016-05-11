@@ -13,12 +13,12 @@ import (
 )
 
 // TokenAuthOK test setup
-func TokenAuthOK(t *testing.T, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
-	return TokenAuthOKCtx(t, context.Background(), ctrl, payload)
+func TokenAuthOK(t *testing.T, ctrl app.AuthController, payload *app.TokenAuthPayload) {
+	TokenAuthOKCtx(t, context.Background(), ctrl, payload)
 }
 
 // TokenAuthOKCtx test setup
-func TokenAuthOKCtx(t *testing.T, ctx context.Context, ctrl app.AuthController, payload *app.TokenAuthPayload) *app.Authorize {
+func TokenAuthOKCtx(t *testing.T, ctx context.Context, ctrl app.AuthController, payload *app.TokenAuthPayload) {
 	err := payload.Validate()
 	if err != nil {
 		panic(err)
@@ -44,14 +44,8 @@ func TokenAuthOKCtx(t *testing.T, ctx context.Context, ctrl app.AuthController, 
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
 
-	a, ok := resp.(*app.Authorize)
-	if !ok {
-		t.Errorf("invalid response media: got %+v, expected instance of app.Authorize", resp)
-	}
-
 	if rw.Code != 200 {
 		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
-	return a
 
 }

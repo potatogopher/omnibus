@@ -85,9 +85,11 @@ func (payload *TokenAuthPayload) Validate() (err error) {
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *TokenAuthContext) OK(r *Authorize) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.authorize")
-	return ctx.Service.Send(ctx.Context, 200, r)
+func (ctx *TokenAuthContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
 }
 
 // CreatePostContext provides the post create action context.
@@ -233,9 +235,11 @@ func NewShowPostContext(ctx context.Context, service *goa.Service) (*ShowPostCon
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowPostContext) OK(r *Post) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.post")
-	return ctx.Service.Send(ctx.Context, 200, r)
+func (ctx *ShowPostContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
 }
 
 // NotFound sends a HTTP response with status code 404.
@@ -480,15 +484,11 @@ func NewShowUserContext(ctx context.Context, service *goa.Service) (*ShowUserCon
 }
 
 // OK sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OK(r *User) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
-	return ctx.Service.Send(ctx.Context, 200, r)
-}
-
-// OKTiny sends a HTTP response with status code 200.
-func (ctx *ShowUserContext) OKTiny(r *UserTiny) error {
-	ctx.ResponseData.Header().Set("Content-Type", "application/vnd.user")
-	return ctx.Service.Send(ctx.Context, 200, r)
+func (ctx *ShowUserContext) OK(resp []byte) error {
+	ctx.ResponseData.Header().Set("Content-Type", "application/json")
+	ctx.ResponseData.WriteHeader(200)
+	_, err := ctx.ResponseData.Write(resp)
+	return err
 }
 
 // NotFound sends a HTTP response with status code 404.

@@ -3,6 +3,7 @@ package main
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"encoding/json"
 	"io"
 
 	"github.com/goadesign/goa"
@@ -91,7 +92,13 @@ func (c *UserController) Show(ctx *app.ShowUserContext) error {
 	}
 
 	user.Href = app.UserHref(user.ID)
-	return ctx.OK(user)
+
+	res, err := json.Marshal(user)
+	if err != nil {
+		return err
+	}
+
+	return ctx.OK(res)
 }
 
 // Update runs the update action.

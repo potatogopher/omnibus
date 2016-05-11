@@ -11,10 +11,10 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 
-	"goa-blog/app"
-	"goa-blog/models"
-	"goa-blog/resources/config"
-	"goa-blog/swagger"
+	"omnibus/app"
+	"omnibus/models"
+	"omnibus/resources/config"
+	"omnibus/swagger"
 
 	"gopkg.in/inconshreveable/log15.v2"
 )

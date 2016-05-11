@@ -7,8 +7,8 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/goadesign/goa"
 
-	"goa-blog/app"
-	"goa-blog/resources/config"
+	"omnibus/app"
+	"omnibus/resources/config"
 )
 
 // AuthController implements the auth resource.

@@ -6,8 +6,8 @@ import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 
-	"goa-blog/app"
-	"goa-blog/models"
+	"omnibus/app"
+	"omnibus/models"
 )
 
 // PostController implements the post resource.

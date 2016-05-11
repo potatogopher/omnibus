@@ -11,8 +11,8 @@ import (
 
 	"golang.org/x/crypto/scrypt"
 
-	"goa-blog/app"
-	"goa-blog/models"
+	"omnibus/app"
+	"omnibus/models"
 )
 
 var (

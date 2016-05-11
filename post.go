@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
 
@@ -50,7 +52,13 @@ func (c *PostController) Show(ctx *app.ShowPostContext) error {
 	}
 
 	post.Href = app.PostHref(post.ID)
-	return ctx.OK(post)
+
+	res, err := json.Marshal(post)
+	if err != nil {
+		return err
+	}
+
+	return ctx.OK(res)
 }
 
 // Update runs the update action.

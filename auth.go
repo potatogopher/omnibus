@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -37,5 +38,10 @@ func (c *AuthController) Token(ctx *app.TokenAuthContext) error {
 	authToken := app.Authorize{}
 	authToken.AccessToken = &tokenStr
 
-	return ctx.OK(&authToken)
+	res, err := json.Marshal(authToken)
+	if err != nil {
+		return err
+	}
+
+	return ctx.OK(res)
 }

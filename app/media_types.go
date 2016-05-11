@@ -21,7 +21,7 @@ type Authorize struct {
 	// access token
 	AccessToken *string `json:"access_token,omitempty" xml:"access_token,omitempty"`
 	// Time to expiration in seconds
-	ExpiresIn *string `json:"expires_in,omitempty" xml:"expires_in,omitempty"`
+	ExpiresIn *int `json:"expires_in,omitempty" xml:"expires_in,omitempty"`
 	// type of token
 	TokenType *string `json:"token_type,omitempty" xml:"token_type,omitempty"`
 }

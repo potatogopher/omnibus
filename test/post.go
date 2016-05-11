@@ -12,70 +12,6 @@ import (
 	"testing"
 )
 
-// ShowPostNotFound test setup
-func ShowPostNotFound(t *testing.T, ctrl app.PostController, postID int) {
-	ShowPostNotFoundCtx(t, context.Background(), ctrl, postID)
-}
-
-// ShowPostNotFoundCtx test setup
-func ShowPostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
-	showCtx, err := app.NewShowPostContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Show(showCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 404 {
-		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
-	}
-
-}
-
-// ShowPostOK test setup
-func ShowPostOK(t *testing.T, ctrl app.PostController, postID int) {
-	ShowPostOKCtx(t, context.Background(), ctrl, postID)
-}
-
-// ShowPostOKCtx test setup
-func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
-	showCtx, err := app.NewShowPostContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Show(showCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
-	}
-
-}
-
 // CreatePostCreated test setup
 func CreatePostCreated(t *testing.T, ctrl app.PostController, payload *app.CreatePostPayload) {
 	CreatePostCreatedCtx(t, context.Background(), ctrl, payload)
@@ -114,40 +50,6 @@ func CreatePostCreatedCtx(t *testing.T, ctx context.Context, ctrl app.PostContro
 
 }
 
-// UpdatePostNoContent test setup
-func UpdatePostNoContent(t *testing.T, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
-	UpdatePostNoContentCtx(t, context.Background(), ctrl, postID, payload)
-}
-
-// UpdatePostNoContentCtx test setup
-func UpdatePostNoContentCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("PUT", fmt.Sprintf("/posts/%v", postID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
-	updateCtx, err := app.NewUpdatePostContext(goaCtx, service)
-	updateCtx.Payload = payload
-
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Update(updateCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
-	}
-
-}
-
 // UpdatePostNotFound test setup
 func UpdatePostNotFound(t *testing.T, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
 	UpdatePostNotFoundCtx(t, context.Background(), ctrl, postID, payload)
@@ -178,6 +80,40 @@ func UpdatePostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostContr
 
 	if rw.Code != 404 {
 		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+}
+
+// UpdatePostNoContent test setup
+func UpdatePostNoContent(t *testing.T, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
+	UpdatePostNoContentCtx(t, context.Background(), ctrl, postID, payload)
+}
+
+// UpdatePostNoContentCtx test setup
+func UpdatePostNoContentCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int, payload *app.UpdatePostPayload) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("PUT", fmt.Sprintf("/posts/%v", postID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	updateCtx, err := app.NewUpdatePostContext(goaCtx, service)
+	updateCtx.Payload = payload
+
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Update(updateCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
 	}
 
 }
@@ -236,6 +172,70 @@ func DeletePostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostContr
 		panic("invalid test data " + err.Error()) // bug
 	}
 	err = ctrl.Delete(deleteCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+}
+
+// ShowPostOK test setup
+func ShowPostOK(t *testing.T, ctrl app.PostController, postID int) {
+	ShowPostOKCtx(t, context.Background(), ctrl, postID)
+}
+
+// ShowPostOKCtx test setup
+func ShowPostOKCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Show(showCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
+	}
+
+}
+
+// ShowPostNotFound test setup
+func ShowPostNotFound(t *testing.T, ctrl app.PostController, postID int) {
+	ShowPostNotFoundCtx(t, context.Background(), ctrl, postID)
+}
+
+// ShowPostNotFoundCtx test setup
+func ShowPostNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.PostController, postID int) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("GET", fmt.Sprintf("/posts/%v", postID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "PostTest"), rw, req, nil)
+	showCtx, err := app.NewShowPostContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Show(showCtx)
 	if err != nil {
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}

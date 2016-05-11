@@ -12,66 +12,34 @@ import (
 	"testing"
 )
 
-// DeleteUserNotFound test setup
-func DeleteUserNotFound(t *testing.T, ctrl app.UserController, userID int) {
-	DeleteUserNotFoundCtx(t, context.Background(), ctrl, userID)
+// ShowUserOK test setup
+func ShowUserOK(t *testing.T, ctrl app.UserController, userID int) {
+	ShowUserOKCtx(t, context.Background(), ctrl, userID)
 }
 
-// DeleteUserNotFoundCtx test setup
-func DeleteUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
+// ShowUserOKCtx test setup
+func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
 	var logBuf bytes.Buffer
 	var resp interface{}
 	respSetter := func(r interface{}) { resp = r }
 	service := goatest.Service(&logBuf, respSetter)
 	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
+	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
 	if err != nil {
 		panic("invalid test " + err.Error()) // bug
 	}
 	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
+	showCtx, err := app.NewShowUserContext(goaCtx, service)
 	if err != nil {
 		panic("invalid test data " + err.Error()) // bug
 	}
-	err = ctrl.Delete(deleteCtx)
+	err = ctrl.Show(showCtx)
 	if err != nil {
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}
 
-	if rw.Code != 404 {
-		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
-	}
-
-}
-
-// DeleteUserNoContent test setup
-func DeleteUserNoContent(t *testing.T, ctrl app.UserController, userID int) {
-	DeleteUserNoContentCtx(t, context.Background(), ctrl, userID)
-}
-
-// DeleteUserNoContentCtx test setup
-func DeleteUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Delete(deleteCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 204 {
-		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	if rw.Code != 200 {
+		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
 
 }
@@ -104,38 +72,6 @@ func ShowUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserControl
 
 	if rw.Code != 404 {
 		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
-	}
-
-}
-
-// ShowUserOK test setup
-func ShowUserOK(t *testing.T, ctrl app.UserController, userID int) {
-	ShowUserOKCtx(t, context.Background(), ctrl, userID)
-}
-
-// ShowUserOKCtx test setup
-func ShowUserOKCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
-	var logBuf bytes.Buffer
-	var resp interface{}
-	respSetter := func(r interface{}) { resp = r }
-	service := goatest.Service(&logBuf, respSetter)
-	rw := httptest.NewRecorder()
-	req, err := http.NewRequest("GET", fmt.Sprintf("/users/%v", userID), nil)
-	if err != nil {
-		panic("invalid test " + err.Error()) // bug
-	}
-	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
-	showCtx, err := app.NewShowUserContext(goaCtx, service)
-	if err != nil {
-		panic("invalid test data " + err.Error()) // bug
-	}
-	err = ctrl.Show(showCtx)
-	if err != nil {
-		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
-	}
-
-	if rw.Code != 200 {
-		t.Errorf("invalid response status code: got %+v, expected 200", rw.Code)
 	}
 
 }
@@ -244,6 +180,70 @@ func UpdateUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserContr
 		panic("invalid test data " + err.Error()) // bug
 	}
 	err = ctrl.Update(updateCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 404 {
+		t.Errorf("invalid response status code: got %+v, expected 404", rw.Code)
+	}
+
+}
+
+// DeleteUserNoContent test setup
+func DeleteUserNoContent(t *testing.T, ctrl app.UserController, userID int) {
+	DeleteUserNoContentCtx(t, context.Background(), ctrl, userID)
+}
+
+// DeleteUserNoContentCtx test setup
+func DeleteUserNoContentCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
+	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Delete(deleteCtx)
+	if err != nil {
+		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
+	}
+
+	if rw.Code != 204 {
+		t.Errorf("invalid response status code: got %+v, expected 204", rw.Code)
+	}
+
+}
+
+// DeleteUserNotFound test setup
+func DeleteUserNotFound(t *testing.T, ctrl app.UserController, userID int) {
+	DeleteUserNotFoundCtx(t, context.Background(), ctrl, userID)
+}
+
+// DeleteUserNotFoundCtx test setup
+func DeleteUserNotFoundCtx(t *testing.T, ctx context.Context, ctrl app.UserController, userID int) {
+	var logBuf bytes.Buffer
+	var resp interface{}
+	respSetter := func(r interface{}) { resp = r }
+	service := goatest.Service(&logBuf, respSetter)
+	rw := httptest.NewRecorder()
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("/users/%v", userID), nil)
+	if err != nil {
+		panic("invalid test " + err.Error()) // bug
+	}
+	goaCtx := goa.NewContext(goa.WithAction(ctx, "UserTest"), rw, req, nil)
+	deleteCtx, err := app.NewDeleteUserContext(goaCtx, service)
+	if err != nil {
+		panic("invalid test data " + err.Error()) // bug
+	}
+	err = ctrl.Delete(deleteCtx)
 	if err != nil {
 		t.Fatalf("controller returned %s, logs:\n%s", err, logBuf.String())
 	}

@@ -23,9 +23,12 @@ func NewAuthController(service *goa.Service) *AuthController {
 
 // Token runs the token action.
 func (c *AuthController) Token(ctx *app.TokenAuthContext) error {
-	token := jwt.New(jwt.SigningMethodRS256)
-	token.Claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	exp := time.Now().Add(time.Hour * 72).Unix()
+	expiration := int(exp)
+	tokenType := "JWT"
 
+	token := jwt.New(jwt.SigningMethodRS256)
+	token.Claims["exp"] = expiration
 	key, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(config.RSAPrivateKey))
 	if err != nil {
 		return err
@@ -37,6 +40,8 @@ func (c *AuthController) Token(ctx *app.TokenAuthContext) error {
 
 	authToken := app.Authorize{}
 	authToken.AccessToken = &tokenStr
+	authToken.ExpiresIn = &expiration
+	authToken.TokenType = &tokenType
 
 	res, err := json.Marshal(authToken)
 	if err != nil {

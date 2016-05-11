@@ -5,7 +5,7 @@ import (
 	. "github.com/goadesign/gorma/dsl"
 )
 
-var _ = StorageGroup("Atlas", func() {
+var _ = StorageGroup("Omnibus", func() {
 	Description("This is the global storage group")
 	Store("postgres", gorma.Postgres, func() {
 		Description("This is the Postgres relational store")

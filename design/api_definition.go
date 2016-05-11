@@ -7,8 +7,8 @@ import (
 
 // This is the cellar application API design used by goa to generate
 // the application code, client, tests, documentation etc.
-var _ = API("rucci.io", func() {
-	Title("rucci.io")
+var _ = API("Omnibus", func() {
+	Title("Omnibus")
 	Description("Blog for Nick Rucci")
 	Contact(func() {
 		Name("Nick Rucci")
@@ -17,7 +17,7 @@ var _ = API("rucci.io", func() {
 	})
 	License(func() {
 		Name("MIT")
-		URL("https://github.com/nicholasrucci/goa-atlas/blob/master/LICENSE")
+		URL("https://github.com/nicholasrucci/omnibus/blob/master/LICENSE")
 	})
 	/*
 	   Docs(func() {

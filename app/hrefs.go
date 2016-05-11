@@ -1,10 +1,10 @@
 //************************************************************************//
-// API "rucci.io": Application Resource Href Factories
+// API "Omnibus": Application Resource Href Factories
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-blog
-// --design=goa-blog/design
+// --out=$(GOPATH)/src/omnibus
+// --design=omnibus/design
 // --pkg=app
 //
 // The content of this file is auto-generated, DO NOT MODIFY

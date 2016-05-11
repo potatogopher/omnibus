@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// Client is the rucci.io service client.
+// Client is the Omnibus service client.
 type Client struct {
 	*goaclient.Client
 	SignerJWT goaclient.Signer

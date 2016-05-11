@@ -89,8 +89,8 @@ info:
   description: Blog for Nick Rucci
   license:
     name: MIT
-    url: https://github.com/nicholasrucci/goa-atlas/blob/master/LICENSE
-  title: rucci.io
+    url: https://github.com/nicholasrucci/omnibus/blob/master/LICENSE
+  title: Omnibus
   version: ""
 paths:
   auth/token:

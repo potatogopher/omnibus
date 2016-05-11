@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"github.com/goadesign/goa"
 	"github.com/goadesign/goa/goatest"
-	"goa-blog/app"
 	"golang.org/x/net/context"
 	"net/http"
 	"net/http/httptest"
+	"omnibus/app"
 	"testing"
 )
 

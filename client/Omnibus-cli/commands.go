@@ -6,9 +6,9 @@ import (
 	"github.com/goadesign/goa"
 	goaclient "github.com/goadesign/goa/client"
 	"github.com/spf13/cobra"
-	"goa-blog/client"
 	"golang.org/x/net/context"
 	"log"
+	"omnibus/client"
 	"os"
 )
 

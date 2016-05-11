@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/spf13/cobra"
-	"goa-blog/client"
+	"omnibus/client"
 	"os"
 	"time"
 )
@@ -14,11 +14,11 @@ var PrettyPrint bool
 func main() {
 	// Create command line parser
 	app := &cobra.Command{
-		Use:   "rucci.io-cli",
-		Short: `CLI client for the rucci.io service`,
+		Use:   "Omnibus-cli",
+		Short: `CLI client for the Omnibus service`,
 	}
 	c := client.New(nil)
-	c.UserAgent = "rucci.io-cli/1.0"
+	c.UserAgent = "Omnibus-cli/1.0"
 	app.PersistentFlags().StringVarP(&c.Scheme, "scheme", "s", "", "Set the requests scheme")
 	app.PersistentFlags().StringVarP(&c.Host, "host", "H", "localhost", "API hostname")
 	app.PersistentFlags().DurationVarP(&c.Timeout, "timeout", "t", time.Duration(20)*time.Second, "Set the request timeout")

@@ -1,10 +1,10 @@
 //************************************************************************//
-// API "rucci.io": Models
+// API "Omnibus": Models
 //
 // Generated with goagen v0.0.1, command line:
 // $ goagen
-// --out=$(GOPATH)/src/goa-blog
-// --design=goa-blog/design
+// --out=$(GOPATH)/src/omnibus
+// --design=omnibus/design
 //
 // The content of this file is auto-generated, DO NOT MODIFY
 //************************************************************************//
@@ -14,8 +14,8 @@ package models
 import (
 	"github.com/goadesign/goa"
 	"github.com/jinzhu/gorm"
-	"goa-blog/app"
 	"golang.org/x/net/context"
+	"omnibus/app"
 	"time"
 )
 

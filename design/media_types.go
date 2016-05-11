@@ -49,7 +49,7 @@ var Authorize = MediaType("application/vnd.authorize+json", func() {
 	Description("Token authorization response")
 	Attributes(func() {
 		Attribute("access_token", String, "access token", func() {})
-		Attribute("expires_in", String, "Time to expiration in seconds", func() {})
+		Attribute("expires_in", Integer, "Time to expiration in seconds", func() {})
 		Attribute("token_type", String, "type of token", func() {})
 	})
 
